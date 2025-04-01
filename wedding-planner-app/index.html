@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planejador de Casamento</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-ring"></i> Planejador de Casamento</h1>
+        <nav>
+            <ul>
+                <li><a href="#dashboard" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#guests"><i class="fas fa-users"></i> Convidados</a></li>
+                <li><a href="#budget"><i class="fas fa-dollar-sign"></i> Orçamento</a></li>
+                <li><a href="#checklist"><i class="fas fa-tasks"></i> Checklist</a></li>
+                <li><a href="#vendors"><i class="fas fa-store"></i> Fornecedores</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
+            </ul>
+             <button id="dark-mode-toggle" class="dark-mode-btn"><i class="fas fa-moon"></i></button>
+        </nav>
+    </header>
+
+    <main id="app-content">
+        <!-- Content will be loaded here dynamically -->
+        <section id="dashboard" class="active">
+            <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+            <div class="dashboard-content">
+                <div class="dashboard-welcome">
+                     <p>Bem-vindo ao seu planejador de casamento!</p>
+                     <div id="countdown-timer">
+                         <h3>Contagem Regressiva</h3>
+                         <p id="timer-display">-- dias, -- horas, -- minutos, -- segundos</p>
+                     </div>
+                </div>
+                <div class="dashboard-photo">
+                    <img id="couple-photo" src="" alt="Foto do Casal" style="display: none;"> <!-- Remove initial src, hide initially -->
+                     <p id="no-photo-message" style="display: block; text-align: center; margin-top: 1rem; color: #888;">Adicione uma URL de foto nas Configurações.</p> <!-- Show message initially -->
+                </div>
+            </div>
+             <p style="margin-top: 2rem;">Use o menu acima para navegar pelas outras seções.</p>
+        </section>
+
+        <section id="guests">
+            <h2><i class="fas fa-users"></i> Gerenciar Convidados</h2>
+            <div class="guest-management">
+                <div class="add-guest-form">
+                    <h3>Adicionar Novo Convidado</h3>
+                    <form id="add-guest-form">
+                        <label for="guest-name">Nome:</label>
+                        <input type="text" id="guest-name" name="guest-name" required>
+
+                        <label for="guest-email">Email (opcional):</label>
+                        <input type="email" id="guest-email" name="guest-email">
+
+                        <label for="guest-group">Grupo (Família/Amigos):</label>
+                        <input type="text" id="guest-group" name="guest-group">
+
+                        <label for="guest-status">Status:</label>
+                        <select id="guest-status" name="guest-status">
+                            <option value="Pendente">Pendente</option>
+                            <option value="Confirmado">Confirmado</option>
+                            <option value="Recusado">Recusado</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Convidado</button>
+                    </form>
+                </div>
+
+                <div class="guest-list">
+                    <h3>Lista de Convidados</h3>
+                    <input type="text" id="search-guest" placeholder="Buscar convidado..." style="margin-bottom: 1rem; padding: 0.5rem; width: 100%;">
+                    <table id="guest-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Grupo</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guest-table-body">
+                            <!-- Guest rows will be added here by JavaScript -->
+                            <tr>
+                                <td>Exemplo Convidado 1</td>
+                                <td>exemplo1@email.com</td>
+                                <td>Família Noiva</td>
+                                <td>Confirmado</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>Exemplo Convidado 2</td>
+                                <td>exemplo2@email.com</td>
+                                <td>Amigos Noivo</td>
+                                <td>Pendente</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="budget">
+            <h2><i class="fas fa-dollar-sign"></i> Gerenciar Orçamento</h2>
+            <div class="budget-management">
+                <div class="budget-summary">
+                    <h3>Resumo do Orçamento</h3>
+                    <div class="summary-cards">
+                        <div class="card">
+                            <h4>Orçamento Total Estimado</h4>
+                            <p id="total-estimated">R$ 0,00</p>
+                        </div>
+                        <div class="card">
+                            <h4>Total Gasto</h4>
+                            <p id="total-spent" class="spent">R$ 0,00</p>
+                        </div>
+                        <div class="card">
+                            <h4>Saldo Restante</h4>
+                            <p id="remaining-balance">R$ 0,00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-budget-item-form">
+                    <h3>Adicionar Item ao Orçamento</h3>
+                    <form id="add-budget-item-form">
+                        <label for="item-description">Descrição:</label>
+                        <input type="text" id="item-description" name="item-description" required>
+
+                        <label for="item-category">Categoria:</label>
+                        <select id="item-category" name="item-category">
+                            <option value="Recepção">Recepção</option>
+                            <option value="Cerimônia">Cerimônia</option>
+                            <option value="Vestuário">Vestuário</option>
+                            <option value="Flores e Decoração">Flores e Decoração</option>
+                            <option value="Música">Música</option>
+                            <option value="Fotografia/Vídeo">Fotografia/Vídeo</option>
+                            <option value="Convites">Convites</option>
+                            <option value="Transporte">Transporte</option>
+                            <option value="Outros">Outros</option>
+                            <option value="Receita">Receita/Pagamento</option>
+                        </select>
+
+                        <label for="item-estimated-cost">Custo Estimado:</label>
+                        <input type="number" id="item-estimated-cost" name="item-estimated-cost" step="0.01" required>
+
+                        <label for="item-actual-cost">Custo Real (Pago):</label>
+                        <input type="number" id="item-actual-cost" name="item-actual-cost" step="0.01">
+
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Item</button>
+                    </form>
+                </div>
+
+                <div class="budget-list">
+                    <h3>Itens do Orçamento</h3>
+                     <input type="text" id="search-budget" placeholder="Buscar item..." style="margin-bottom: 1rem; padding: 0.5rem; width: 100%;">
+                    <table id="budget-table">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Estimado</th>
+                                <th>Pago</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="budget-table-body">
+                            <!-- Budget items will be added here -->
+                             <tr>
+                                <td>Aluguel Salão</td>
+                                <td>Recepção</td>
+                                <td>R$ 5.000,00</td>
+                                <td>R$ 5.000,00</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                             <tr>
+                                <td>Vestido Noiva</td>
+                                <td>Vestuário</td>
+                                <td>R$ 3.000,00</td>
+                                <td>R$ 2.800,00</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="checklist">
+            <h2><i class="fas fa-tasks"></i> Checklist de Tarefas</h2>
+            <div class="checklist-management">
+                <div class="add-task-form">
+                    <h3>Adicionar Nova Tarefa</h3>
+                    <form id="add-task-form">
+                        <label for="task-description">Descrição da Tarefa:</label>
+                        <input type="text" id="task-description" name="task-description" required>
+
+                        <label for="task-category">Categoria (opcional):</label>
+                        <input type="text" id="task-category" name="task-category">
+
+                        <label for="task-due-date">Data Limite (opcional):</label>
+                        <input type="date" id="task-due-date" name="task-due-date">
+
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
+                    </form>
+                </div>
+
+                <div class="task-list">
+                    <h3>Lista de Tarefas</h3>
+                    <div class="task-filters">
+                        <input type="text" id="search-task" placeholder="Buscar tarefa..." style="padding: 0.5rem;">
+                        <select id="filter-task-status">
+                            <option value="all">Todas</option>
+                            <option value="pending">Pendentes</option>
+                            <option value="completed">Concluídas</option>
+                        </select>
+                    </div>
+                    <ul id="task-list-ul">
+                        <!-- Tasks will be added here by JavaScript -->
+                        <li class="task-item completed" data-id="0">
+                            <div class="task-info">
+                                <input type="checkbox" checked>
+                                <span class="task-desc">Definir data do casamento</span>
+                                <span class="task-cat">Geral</span>
+                                <span class="task-due">2025-01-15</span>
+                            </div>
+                            <button class="btn btn-danger btn-sm delete-task"><i class="fas fa-trash"></i></button>
+                        </li>
+                        <li class="task-item" data-id="1">
+                             <div class="task-info">
+                                <input type="checkbox">
+                                <span class="task-desc">Reservar local da recepção</span>
+                                <span class="task-cat">Recepção</span>
+                                <span class="task-due">2025-03-01</span>
+                            </div>
+                            <button class="btn btn-danger btn-sm delete-task"><i class="fas fa-trash"></i></button>
+                        </li>
+                         <li class="task-item" data-id="2">
+                             <div class="task-info">
+                                <input type="checkbox">
+                                <span class="task-desc">Contratar fotógrafo</span>
+                                <span class="task-cat">Fornecedores</span>
+                                <span class="task-due"></span> <!-- No due date -->
+                            </div>
+                            <button class="btn btn-danger btn-sm delete-task"><i class="fas fa-trash"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="vendors">
+             <h2><i class="fas fa-store"></i> Gerenciar Fornecedores</h2>
+             <div class="vendor-management">
+                 <div class="add-vendor-form">
+                     <h3>Adicionar Novo Fornecedor</h3>
+                     <form id="add-vendor-form">
+                         <label for="vendor-name">Nome do Fornecedor:</label>
+                         <input type="text" id="vendor-name" name="vendor-name" required>
+
+                         <label for="vendor-service">Serviço/Categoria:</label>
+                         <input type="text" id="vendor-service" name="vendor-service" required>
+
+                         <label for="vendor-contact">Contato (Nome/Telefone):</label>
+                         <input type="text" id="vendor-contact" name="vendor-contact">
+
+                         <label for="vendor-email">Email:</label>
+                         <input type="email" id="vendor-email" name="vendor-email">
+
+                         <label for="vendor-status">Status:</label>
+                         <select id="vendor-status" name="vendor-status">
+                             <option value="Pesquisando">Pesquisando</option>
+                             <option value="Contatado">Contatado</option>
+                             <option value="Contratado">Contratado</option>
+                             <option value="Pago">Pago</option>
+                             <option value="Descartado">Descartado</option>
+                         </select>
+
+                         <label for="vendor-cost">Custo Estimado/Final:</label>
+                         <input type="number" id="vendor-cost" name="vendor-cost" step="0.01">
+
+                         <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Fornecedor</button>
+                     </form>
+                 </div>
+
+                 <div class="vendor-list">
+                     <h3>Lista de Fornecedores</h3>
+                     <input type="text" id="search-vendor" placeholder="Buscar fornecedor..." style="margin-bottom: 1rem; padding: 0.5rem; width: 100%;">
+                     <table id="vendor-table">
+                         <thead>
+                             <tr>
+                                 <th>Nome</th>
+                                 <th>Serviço</th>
+                                 <th>Contato</th>
+                                 <th>Email</th>
+                                 <th>Status</th>
+                                 <th>Custo</th>
+                                 <th>Ações</th>
+                             </tr>
+                         </thead>
+                         <tbody id="vendor-table-body">
+                             <!-- Vendor rows will be added here -->
+                              <tr>
+                                 <td>Buffet Alegria</td>
+                                 <td>Buffet</td>
+                                 <td>Maria (11) 99999-8888</td>
+                                 <td>contato@buffetalegria.com</td>
+                                 <td>Contratado</td>
+                                 <td>R$ 8.000,00</td>
+                                 <td>
+                                     <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                 </td>
+                             </tr>
+                              <tr>
+                                 <td>Foto & Arte</td>
+                                 <td>Fotografia</td>
+                                 <td>João Silva</td>
+                                 <td>joao@fotoearte.com</td>
+                                 <td>Pesquisando</td>
+                                 <td>R$ 4.500,00</td>
+                                 <td>
+                                     <button class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+                                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                 </td>
+                             </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+        </section>
+
+        <section id="settings">
+            <h2><i class="fas fa-cog"></i> Configurações do Casamento</h2>
+            <form id="settings-form">
+                <label for="wedding-date">Data do Casamento:</label>
+                <input type="date" id="wedding-date" name="wedding-date">
+
+                <label for="couple-photo-url">URL da Foto do Casal:</label>
+                <input type="url" id="couple-photo-url" name="couple-photo-url" placeholder="https://exemplo.com/foto.jpg">
+
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Configurações</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Planejador de Casamento. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
