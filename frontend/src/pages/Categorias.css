@@ -6,7 +6,7 @@
 }
 
 .categoria-card {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do card de categoria */
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--box-shadow);
@@ -19,13 +19,13 @@
 
 .categoria-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra do hover ajustada */
 }
 
 .categoria-nome {
   margin: 0;
   font-size: 1.25rem;
-  color: var(--text-color);
+  color: var(--text-color); /* Cor do nome da categoria ajustada */
 }
 
 .categoria-actions {
@@ -37,9 +37,9 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 2rem;
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do "sem dados" */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  color: #666;
+  color: var(--text-color); /* Cor do texto "sem dados" */
   font-style: italic;
 }

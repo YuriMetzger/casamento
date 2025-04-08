@@ -1,18 +1,18 @@
 .footer {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do footer ajustado */
   padding: 1.5rem 0;
   text-align: center;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15); /* Sombra ajustada para tema escuro */
   margin-top: auto;
 }
 
 .footer p {
   margin: 0.25rem 0;
-  color: #666;
+  color: var(--text-color); /* Cor do texto do footer ajustada */
 }
 
 .footer-love {
-  color: var(--primary-color);
+  color: var(--accent-color); /* Cor do texto "love" ajustada (Verde Neon) */
   font-weight: 500;
   margin-top: 0.5rem;
 }

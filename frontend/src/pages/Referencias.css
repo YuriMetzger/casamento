@@ -6,7 +6,7 @@
 }
 
 .referencia-card {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do card de referência */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
@@ -16,19 +16,19 @@
 
 .referencia-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra do hover ajustada */
 }
 
 .referencia-header {
   padding: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color); /* Borda inferior do header */
 }
 
 .referencia-data {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor da data (Ciano) */
   font-weight: 500;
 }
 
@@ -54,8 +54,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
-  color: #aaa;
+  background-color: var(--background-color); /* Fundo do placeholder da foto */
+  color: #666; /* Cor do ícone do placeholder */
   font-size: 3rem;
 }
 
@@ -69,7 +69,7 @@
   gap: 0.5rem;
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título "Cores" (Ciano) */
 }
 
 .cores-preview {
@@ -81,28 +81,28 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do ponto de cor */
 }
 
 .referencia-fotos-count {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #666;
+  color: var(--text-color); /* Cor da contagem de fotos */
   font-size: 0.875rem;
 }
 
 .referencia-footer {
   padding: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color); /* Borda superior do footer */
   text-align: center;
 }
 
 .btn-view {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: var(--accent-color);
-  color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.15); /* Fundo do botão ver */
+  color: var(--primary-color); /* Cor do texto do botão ver */
   border: none;
   border-radius: var(--border-radius);
   font-weight: 500;
@@ -111,13 +111,13 @@
 }
 
 .btn-view:hover {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Hover do botão ver */
   color: white;
 }
 
 /* Detalhes da Referência */
 .referencia-detail {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do detalhe da referência */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 2rem;
@@ -136,7 +136,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da data (Ciano) */
   margin-bottom: 0.5rem;
 }
 
@@ -149,7 +149,7 @@
 
 .referencia-imagem-container h3 {
   margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da imagem (Ciano) */
 }
 
 .referencia-imagem {
@@ -171,9 +171,9 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  background-color: #f5f5f5;
+  background-color: var(--background-color); /* Fundo do placeholder da imagem */
   border-radius: var(--border-radius);
-  color: #aaa;
+  color: #666; /* Cor do ícone do placeholder */
 }
 
 .referencia-imagem-placeholder svg {
@@ -185,7 +185,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da paleta (Ciano) */
   margin-bottom: 1rem;
 }
 
@@ -199,9 +199,9 @@
   display: flex;
   align-items: center;
   padding: 0.75rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color); /* Borda do item de cor */
   border-radius: var(--border-radius);
-  background-color: white;
+  background-color: var(--background-color); /* Fundo do item de cor */
   transition: var(--transition);
 }
 
@@ -213,7 +213,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do preview de cor */
   margin-right: 0.75rem;
 }
 
@@ -230,14 +230,14 @@
 
 .cor-nome {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-color); /* Cor do nome da cor */
 }
 
 /* Seção de Fotos */
 .referencia-fotos-section {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--border-color); /* Borda superior da seção de fotos */
 }
 
 .fotos-header {
@@ -248,7 +248,7 @@
 }
 
 .fotos-header h2 {
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da seção de fotos (Ciano) */
   margin: 0;
 }
 
@@ -261,14 +261,16 @@
 
 .fotos-filtro label {
   font-weight: 500;
-  color: var(--primary-color);
+  color: var(--text-color); /* Cor do label do filtro */
 }
 
 .fotos-filtro select {
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do select do filtro */
   border-radius: var(--border-radius);
   font-size: 1rem;
+  background-color: var(--background-color); /* Fundo do select */
+  color: var(--text-color); /* Cor do texto do select */
 }
 
 .no-fotos {
@@ -277,15 +279,15 @@
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  background-color: #f9f9f9;
+  background-color: var(--background-color); /* Fundo do "sem fotos" */
   border-radius: var(--border-radius);
-  color: #666;
+  color: var(--text-color); /* Cor do texto "sem fotos" */
 }
 
 .no-fotos svg {
   font-size: 3rem;
   margin-bottom: 1rem;
-  color: #ccc;
+  color: #555; /* Cor do ícone "sem fotos" */
 }
 
 .no-fotos button {
@@ -301,14 +303,14 @@
 .foto-card {
   border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  box-shadow: var(--box-shadow); /* Sombra do card de foto */
+  background-color: var(--background-color-light); /* Fundo do card de foto */
   transition: var(--transition);
 }
 
 .foto-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra do hover ajustada */
 }
 
 .foto-image {
@@ -330,7 +332,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6); /* Overlay um pouco mais escuro */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -357,17 +359,22 @@
 }
 
 .btn-edit-foto {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color); /* Botão editar foto (Ciano) */
   color: white;
 }
 
 .btn-delete-foto {
-  background-color: var(--danger-color);
+  background-color: var(--danger-color); /* Botão deletar foto */
   color: white;
 }
 
-.btn-edit-foto:hover,
+.btn-edit-foto:hover {
+  background-color: var(--accent-color); /* Hover do botão editar foto (Verde Neon) */
+  color: var(--text-color-dark);
+  transform: scale(1.1);
+}
 .btn-delete-foto:hover {
+  background-color: #ff5c5c; /* Hover do botão deletar foto (Vermelho mais claro) */
   transform: scale(1.1);
 }
 
@@ -378,14 +385,14 @@
 .foto-descricao {
   margin: 0 0 0.5rem 0;
   font-size: 0.875rem;
-  color: #333;
+  color: var(--text-color); /* Cor da descrição da foto */
 }
 
 .foto-categoria {
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  background-color: var(--accent-color);
-  color: var(--primary-color);
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.2); /* Fundo do badge de categoria */
+  color: var(--secondary-color); /* Cor do texto do badge de categoria (Ciano) */
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 500;

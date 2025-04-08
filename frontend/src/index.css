@@ -1,16 +1,21 @@
-:root {
-  --primary-color: #6a5acd;
-  --primary-color-rgb: 106, 90, 205; /* RGB values for primary color */
-  --secondary-color: #9370db;
-  --accent-color: #e6e6fa;
-  --text-color: #333;
-  --background-color: #f9f9f9;
-  --success-color: #4caf50;
-  --warning-color: #ff9800;
-  --danger-color: #f44336;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --transition: all 0.3s ease;
+ :root {
+  /* Nova Paleta Futurista (Dark Mode Base) */
+  --primary-color: #0A74DA;       /* Azul vibrante */
+  --primary-color-rgb: 10, 116, 218;
+  --secondary-color: #04BADE;     /* Ciano */
+  --accent-color: #90F4A4;        /* Verde neon claro (para acentos) */
+  --text-color: #E0E0E0;          /* Cinza claro (texto principal) */
+  --text-color-dark: #222222;     /* Cinza escuro (texto em fundo claro) */
+  --background-color: #121212;    /* Quase preto (fundo principal) */
+  --background-color-light: #1E1E1E; /* Cinza escuro (para cards/elementos elevados) */
+  --border-color: #333333;        /* Cinza escuro (bordas) */
+  --success-color: #28a745;       /* Verde sucesso */
+  --warning-color: #ffc107;       /* Amarelo aviso */
+  --danger-color: #dc3545;        /* Vermelho perigo */
+
+  --border-radius: 6px; /* Levemente reduzido para um look mais sharp */
+  --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra um pouco mais pronunciada */
+  --transition: all 0.25s ease-in-out; /* Transição um pouco mais rápida */
 }
 
 * {
@@ -25,30 +30,32 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  /* Adicionando um gradiente sutil ao fundo */
+  background: linear-gradient(180deg, var(--background-color) 0%, #1a1a1a 100%);
+  color: var(--text-color); /* Cor de texto padrão ajustada para fundo escuro */
   line-height: 1.6;
+  min-height: 100vh; /* Garante que o gradiente cubra toda a altura */
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   margin-bottom: 1rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Usando cor secundária (Ciano) para títulos */
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Links com cor secundária */
   text-decoration: none;
   transition: var(--transition);
 }
 
 a:hover {
-  color: var(--secondary-color);
+  color: var(--accent-color); /* Hover do link com cor de acento */
 }
 
 button {
   cursor: pointer;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Botão primário */
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -58,8 +65,9 @@ button {
 }
 
 button:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão primário */
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(var(--secondary-color-rgb, 4, 186, 222), 0.3); /* Sombra no hover */
 }
 
 button:disabled {
@@ -71,7 +79,7 @@ input, select, textarea {
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Bordas com nova variável */
   border-radius: var(--border-radius);
   font-family: inherit;
   font-size: 1rem;
@@ -80,7 +88,7 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--secondary-color); /* Foco com cor secundária */
   box-shadow: 0 0 0 2px rgba(106, 90, 205, 0.2);
 }
 
@@ -91,7 +99,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .card {
-  background-color: white;
+  /* Gradiente sutil para o fundo do card */
+  background: linear-gradient(145deg, var(--background-color-light) 0%, #242424 100%);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 1.5rem;

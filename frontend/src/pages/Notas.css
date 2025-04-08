@@ -6,39 +6,39 @@
 }
 
 .nota-card {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do card de nota */
   border-radius: var(--border-radius);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--box-shadow); /* Sombra ajustada */
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   height: 280px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color); /* Borda do card de nota */
   position: relative;
 }
 
 .nota-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
-  border-color: #ced4da;
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); /* Sombra do hover ajustada */
+  border-color: var(--secondary-color); /* Borda do hover (Ciano) */
 }
 
 .nota-header {
   padding: 1.25rem 1.5rem 1rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color); /* Borda inferior do header */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
+  background-color: var(--background-color); /* Fundo do header */
 }
 
 .nota-titulo {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da nota (Ciano) */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -48,7 +48,7 @@
 .btn-delete-nota {
   background: transparent;
   border: none;
-  color: #adb5bd;
+  color: var(--danger-color); /* Ícone de deletar em Vermelho */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -61,6 +61,7 @@
   top: 0.75rem;
   right: 0.75rem;
   opacity: 0;
+  padding: 0; /* Remover padding se houver */
 }
 
 .nota-card:hover .btn-delete-nota {
@@ -68,8 +69,8 @@
 }
 
 .btn-delete-nota:hover {
-  background-color: rgba(244, 67, 54, 0.1);
-  color: var(--danger-color);
+  background-color: rgba(var(--danger-color-rgb, 220, 53, 69), 0.1); /* Fundo sutil no hover */
+  color: #ff5c5c; /* Cor mais clara no hover */
 }
 
 .nota-preview {
@@ -86,12 +87,13 @@
   left: 0;
   right: 0;
   height: 40px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  /* Gradiente ajustado para fundo escuro */
+  background: linear-gradient(to bottom, rgba(var(--background-color-light-rgb, 30, 30, 30), 0), var(--background-color-light));
   pointer-events: none;
 }
 
 .nota-conteudo-preview {
-  color: #495057;
+  color: var(--text-color); /* Cor do preview do conteúdo */
   font-size: 0.95rem;
   line-height: 1.6;
   max-height: 100%;
@@ -104,22 +106,22 @@
 
 .nota-footer {
   padding: 0.75rem 1.5rem;
-  border-top: 1px solid #e9ecef;
-  background-color: #f8f9fa;
+  border-top: 1px solid var(--border-color); /* Borda superior do footer */
+  background-color: var(--background-color); /* Fundo do footer */
   font-size: 0.85rem;
-  color: #6c757d;
+  color: var(--text-color); /* Cor do texto do footer */
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .nota-footer svg {
-  color: #6c757d;
+  color: var(--text-color); /* Cor do ícone do footer */
 }
 
 /* Editor de Notas */
 .nota-editor {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do editor */
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -127,29 +129,30 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 200px);
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color); /* Borda do editor */
 }
 
 .nota-titulo-input {
   padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color); /* Borda inferior do input de título */
 }
 
 .titulo-input {
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1.75rem;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color); /* Borda do input de título */
   border-radius: var(--border-radius);
   outline: none;
-  color: #333;
+  color: var(--text-color); /* Cor do texto do input de título */
+  background-color: var(--background-color); /* Fundo do input de título */
   font-weight: 500;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .titulo-input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+  border-color: var(--secondary-color); /* Cor da borda no foco (Ciano) */
+  box-shadow: 0 0 0 3px rgba(var(--secondary-color-rgb, 4, 186, 222), 0.15); /* Sombra no foco */
 }
 
 .nota-conteudo-editor {
@@ -163,7 +166,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do editor rico */
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -174,8 +177,8 @@
   flex-wrap: wrap;
   align-items: center;
   padding: 0.75rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
+  background-color: var(--background-color); /* Fundo da toolbar */
+  border-bottom: 1px solid var(--border-color); /* Borda inferior da toolbar */
 }
 
 .toolbar-group {
@@ -190,32 +193,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  border: 1px solid #e9ecef;
+  background-color: var(--background-color-light); /* Fundo do botão da toolbar */
+  border: 1px solid var(--border-color); /* Borda do botão da toolbar */
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
-  color: #495057;
+  color: var(--text-color); /* Cor do ícone do botão da toolbar */
   transition: all 0.2s ease;
 }
 
 /* Removido definição de tamanho de ícones, agora definido diretamente nos componentes */
 
 .toolbar-button:hover {
-  background-color: #f1f3f5;
-  border-color: #ced4da;
-  color: var(--primary-color);
+  background-color: var(--background-color); /* Hover do botão da toolbar */
+  border-color: var(--secondary-color); /* Borda do hover (Ciano) */
+  color: var(--secondary-color); /* Cor do ícone no hover (Ciano) */
 }
 
 .toolbar-button:active {
-  background-color: #e9ecef;
+  background-color: var(--border-color); /* Fundo do botão ativo */
   transform: translateY(1px);
 }
 
 .toolbar-separator {
   width: 1px;
   height: 40px;
-  background-color: #e9ecef;
+  background-color: var(--border-color); /* Cor do separador */
   margin: 0 0.5rem;
 }
 
@@ -237,7 +240,7 @@
   height: 0;
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;
-  border-top: 3px solid #adb5bd;
+  border-top: 3px solid var(--text-color); /* Cor da seta do dropdown */
 }
 
 .dropdown-menu {
@@ -249,8 +252,8 @@
   min-width: 160px;
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
-  background-color: white;
-  border: 1px solid #e9ecef;
+  background-color: var(--background-color-light); /* Fundo do menu dropdown */
+  border: 1px solid var(--border-color); /* Borda do menu dropdown */
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -265,7 +268,7 @@
   padding: 0.5rem 1rem;
   clear: both;
   font-weight: 400;
-  color: #212529;
+  color: var(--text-color); /* Cor do item do dropdown */
   text-align: left;
   background-color: transparent;
   border: 0;
@@ -274,8 +277,8 @@
 }
 
 .dropdown-item:hover {
-  background-color: #f8f9fa;
-  color: var(--primary-color);
+  background-color: var(--background-color); /* Hover do item do dropdown */
+  color: var(--secondary-color); /* Cor do texto no hover (Ciano) */
 }
 
 /* Color menu */
@@ -294,7 +297,7 @@
   width: 24px;
   height: 24px;
   margin: 0.25rem;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color); /* Borda do item de cor */
   border-radius: 4px;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -311,15 +314,15 @@
   overflow-y: auto;
   outline: none;
   line-height: 1.6;
-  color: #333;
+  color: var(--text-color); /* Cor do conteúdo do editor */
   font-size: 1rem;
   min-height: 300px;
-  background-color: white;
+  background-color: var(--background-color); /* Fundo do conteúdo do editor */
 }
 
 .editor-content:empty:before {
   content: attr(placeholder);
-  color: #aaa;
+  color: #666; /* Cor do placeholder ajustada */
   pointer-events: none;
 }
 
@@ -333,15 +336,15 @@
 .editor-content blockquote {
   margin: 1rem 0;
   padding: 0.5rem 1rem;
-  border-left: 4px solid var(--primary-color);
-  background-color: #f9f9f9;
+  border-left: 4px solid var(--secondary-color); /* Borda do blockquote (Ciano) */
+  background-color: var(--background-color-light); /* Fundo do blockquote */
   font-style: italic;
-  color: #666;
+  color: var(--text-color); /* Cor do texto do blockquote */
 }
 
 .editor-content h1, .editor-content h2, .editor-content h3 {
   margin: 1.5rem 0 1rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor dos títulos no editor (Ciano) */
 }
 
 .editor-content ul, .editor-content ol {
@@ -351,23 +354,23 @@
 
 /* Detalhes da Nota */
 .nota-detail {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do detalhe da nota */
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
   margin-top: 1rem;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--border-color); /* Borda do detalhe da nota */
 }
 
 .nota-header-detail {
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color); /* Borda inferior do header do detalhe */
 }
 
 .nota-titulo-detail {
   margin: 0 0 1rem 0;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título do detalhe (Ciano) */
   font-size: 2rem;
   font-weight: 600;
 }
@@ -376,7 +379,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  color: #6c757d;
+  color: var(--text-color); /* Cor dos metadados */
   font-size: 0.875rem;
 }
 
@@ -387,12 +390,12 @@
 }
 
 .nota-data svg {
-  color: #6c757d;
+  color: var(--text-color); /* Cor do ícone dos metadados */
 }
 
 .nota-conteudo-detail {
   line-height: 1.8;
-  color: #333;
+  color: var(--text-color); /* Cor do conteúdo do detalhe */
   font-size: 1.1rem;
 }
 
@@ -400,7 +403,7 @@
 .nota-conteudo-detail h2,
 .nota-conteudo-detail h3 {
   margin: 1.5rem 0 1rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor dos títulos no detalhe (Ciano) */
 }
 
 .nota-conteudo-detail p {
@@ -424,18 +427,18 @@
 .nota-conteudo-detail blockquote {
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
-  border-left: 4px solid var(--primary-color);
-  background-color: #f8f9fa;
+  border-left: 4px solid var(--secondary-color); /* Borda do blockquote no detalhe (Ciano) */
+  background-color: var(--background-color); /* Fundo do blockquote no detalhe */
   font-style: italic;
-  color: #495057;
+  color: var(--text-color); /* Cor do texto do blockquote no detalhe */
 }
 
 .nota-sem-conteudo {
-  color: #adb5bd;
+  color: var(--text-color); /* Cor do texto "sem conteúdo" */
   font-style: italic;
   padding: 2rem;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: var(--background-color); /* Fundo do "sem conteúdo" */
   border-radius: var(--border-radius);
 }
 
@@ -445,7 +448,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Botão salvar usa cor primária */
   color: white;
   border: none;
   border-radius: var(--border-radius);
@@ -456,7 +459,7 @@
 }
 
 .btn-save:hover:not(:disabled) {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão salvar usa cor secundária */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -471,8 +474,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #f5f5f5;
-  color: #666;
+  background-color: var(--border-color); /* Fundo do botão cancelar */
+  color: var(--text-color); /* Cor do texto do botão cancelar */
   border: none;
   border-radius: var(--border-radius);
   font-weight: 500;
@@ -483,52 +486,36 @@
 }
 
 .btn-cancel:hover {
-  background-color: #e0e0e0;
+  background-color: #444; /* Hover do botão cancelar */
   transform: translateY(-2px);
 }
 
-.btn-edit {
+/* Ajuste para botões de ação na página de detalhes da nota */
+.page-actions .btn-edit,
+.page-actions .btn-delete {
+  background: none;
+  border: none;
+  padding: 0.5rem; /* Padding para área de clique */
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #4dabf7;
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  cursor: pointer;
+  justify-content: center;
+  transition: var(--transition);
+  border-radius: 4px;
+}
+
+.page-actions .btn-edit {
+  color: var(--secondary-color); /* Ícone Ciano */
+}
+
+.page-actions .btn-delete {
+  color: var(--danger-color); /* Ícone Vermelho */
   transition: all 0.2s ease;
   margin-right: 0.5rem;
   font-size: 0.95rem;
 }
 
-.btn-edit:hover {
-  background-color: #339af0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.btn-delete {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.95rem;
-}
-
-.btn-delete:hover {
-  background-color: #fa5252;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+/* Removed leftover global styles for .btn-edit:hover, .btn-delete, .btn-delete:hover */
 
 @media (max-width: 768px) {
   .notas-grid {

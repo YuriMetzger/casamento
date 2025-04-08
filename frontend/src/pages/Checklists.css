@@ -1,5 +1,5 @@
 .checklist-progress {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo da seção de progresso */
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--box-shadow);
@@ -16,19 +16,19 @@
 .progress-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título do progresso (Ciano) */
 }
 
 .progress-percentage {
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor da porcentagem do progresso (Ciano) */
 }
 
 .progress-bar-container {
   width: 100%;
   height: 12px;
-  background-color: #e0e0e0;
+  background-color: var(--border-color); /* Fundo da barra de progresso */
   border-radius: 6px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -44,7 +44,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--text-color); /* Cor das estatísticas de progresso */
 }
 
 .checklist-categories {
@@ -55,7 +55,7 @@
 }
 
 .category-card {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do card de categoria */
   border-radius: var(--border-radius);
   padding: 1.5rem;
   box-shadow: var(--box-shadow);
@@ -65,7 +65,7 @@
 
 .category-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25); /* Sombra do hover ajustada */
 }
 
 .category-header {
@@ -78,7 +78,7 @@
 .category-title {
   margin: 0;
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da categoria (Ciano) */
 }
 
 .btn-add-small {
@@ -88,7 +88,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Fundo do botão adicionar pequeno */
   color: white;
   border: none;
   cursor: pointer;
@@ -96,7 +96,7 @@
 }
 
 .btn-add-small:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão adicionar pequeno */
   transform: translateY(-2px);
 }
 
@@ -104,8 +104,8 @@
   display: block;
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--accent-color);
-  color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.15); /* Fundo do botão ver tarefas */
+  color: var(--primary-color); /* Cor do texto do botão ver tarefas */
   border: none;
   border-radius: var(--border-radius);
   font-weight: 500;
@@ -116,13 +116,13 @@
 }
 
 .btn-ver-tarefas:hover {
-  background-color: #d8d0f8;
+  background-color: rgba(var(--primary-color-rgb), 0.25); /* Hover do botão ver tarefas */
   transform: translateY(-2px);
 }
 
 .category-description {
   margin-bottom: 1rem;
-  color: #666;
+  color: var(--text-color); /* Cor da descrição da categoria */
   font-size: 0.875rem;
 }
 
@@ -137,14 +137,14 @@
 .checklist-item {
   padding: 1rem;
   border-radius: var(--border-radius);
-  background-color: var(--accent-color);
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.1); /* Fundo do item de checklist */
   margin-bottom: 1rem;
   cursor: pointer;
   transition: var(--transition);
 }
 
 .checklist-item:hover {
-  background-color: #d8d0f8;
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.2); /* Hover do item de checklist */
   transform: translateY(-2px);
 }
 
@@ -158,12 +158,12 @@
 .checklist-title {
   margin: 0;
   font-size: 1.1rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título do item de checklist (Ciano) */
 }
 
 .checklist-percentage {
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor da porcentagem do item de checklist (Ciano) */
 }
 
 .checklist-progress {
@@ -172,16 +172,16 @@
 
 .checklist-stats {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-color); /* Cor das estatísticas do item de checklist */
   text-align: right;
 }
 
 .no-checklists {
   text-align: center;
   padding: 1rem;
-  color: #666;
+  color: var(--text-color); /* Cor do texto "sem checklists" */
   font-style: italic;
-  background-color: var(--accent-color);
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.05); /* Fundo do "sem checklists" */
   border-radius: var(--border-radius);
 }
 
@@ -189,29 +189,29 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem;
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do estado vazio */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
 }
 
 .empty-icon {
   font-size: 4rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do ícone do estado vazio (Ciano) */
   margin-bottom: 1rem;
 }
 
 .empty-state h3 {
   margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título do estado vazio (Ciano) */
 }
 
 .empty-state p {
-  color: #666;
+  color: var(--text-color); /* Cor do texto do estado vazio */
 }
 
 /* Estilos para a página de detalhes da categoria */
 .categoria-detail {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do detalhe da categoria */
   border-radius: var(--border-radius);
   padding: 2rem;
   box-shadow: var(--box-shadow);
@@ -219,13 +219,13 @@
 
 .categoria-description {
   margin-bottom: 1.5rem;
-  color: #666;
+  color: var(--text-color); /* Cor da descrição da categoria */
 }
 
 .categoria-progress {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background-color: var(--accent-color);
+  background-color: rgba(var(--primary-color-rgb), 0.1); /* Fundo da seção de progresso da categoria */
   border-radius: var(--border-radius);
 }
 
@@ -235,7 +235,7 @@
 
 .tarefas-section h3 {
   margin-bottom: 1rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título da seção de tarefas (Ciano) */
 }
 
 .tarefas-pendentes,
@@ -247,8 +247,8 @@
 .tarefas-concluidas h4 {
   margin-bottom: 0.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
-  color: var(--primary-color);
+  border-bottom: 1px solid var(--border-color); /* Borda do subtítulo da tarefa */
+  color: var(--secondary-color); /* Cor do subtítulo da tarefa (Ciano) */
 }
 
 .tarefa-checkbox {
@@ -258,7 +258,7 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do checkbox (Ciano) */
   transition: var(--transition);
 }
 
@@ -272,15 +272,15 @@
 
 .tarefa-item.concluida .tarefa-descricao {
   text-decoration: line-through;
-  color: #999;
+  color: rgba(var(--text-color-rgb, 224, 224, 224), 0.5); /* Cor da tarefa concluída */
 }
 
 .btn-back {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--accent-color);
-  color: var(--primary-color);
+  background-color: var(--border-color); /* Fundo do botão voltar */
+  color: var(--text-color); /* Cor do texto do botão voltar */
   padding: 0.5rem 1rem;
   border-radius: var(--border-radius);
   border: none;
@@ -289,7 +289,7 @@
 }
 
 .btn-back:hover {
-  background-color: #d8d0f8;
+  background-color: #444; /* Hover do botão voltar */
   transform: translateY(-2px);
 }
 

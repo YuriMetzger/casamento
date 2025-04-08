@@ -5,7 +5,7 @@
 }
 
 .orcamento-form-container {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do container do formulário */
   border-radius: var(--border-radius);
   padding: 2rem;
   box-shadow: var(--box-shadow);
@@ -24,11 +24,12 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do ícone do input (Ciano) */
 }
 
 .input-with-icon input {
   padding-left: 2.5rem;
+  /* Herda estilos de input de index.css, já ajustados */
 }
 
 .btn-save-orcamento {
@@ -39,7 +40,7 @@
   width: 100%;
   padding: 0.75rem;
   margin-top: 1.5rem;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Botão salvar usa cor primária */
   color: white;
   border: none;
   border-radius: var(--border-radius);
@@ -49,12 +50,13 @@
 }
 
 .btn-save-orcamento:hover:not(:disabled) {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão salvar usa cor secundária */
   transform: translateY(-2px);
 }
 
 .btn-save-orcamento:disabled {
-  background-color: #ccc;
+  background-color: var(--border-color); /* Fundo do botão desabilitado */
+  color: #888; /* Cor do texto do botão desabilitado */
   cursor: not-allowed;
 }
 
@@ -66,17 +68,17 @@
 }
 
 .mensagem-sucesso {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: var(--success-color);
+  background-color: rgba(40, 167, 69, 0.2); /* Fundo da mensagem de sucesso */
+  color: #28a745; /* Cor do texto da mensagem de sucesso */
 }
 
 .mensagem-erro {
-  background-color: rgba(244, 67, 54, 0.2);
-  color: var(--danger-color);
+  background-color: rgba(220, 53, 69, 0.2); /* Fundo da mensagem de erro */
+  color: #dc3545; /* Cor do texto da mensagem de erro */
 }
 
 .orcamento-stats {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do container de estatísticas */
   border-radius: var(--border-radius);
   padding: 2rem;
   box-shadow: var(--box-shadow);
@@ -97,13 +99,13 @@
 
 .stat-label {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--text-color); /* Cor do label da estatística */
 }
 
 .stat-value {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do valor da estatística (Ciano) */
 }
 
 .valor-negativo {

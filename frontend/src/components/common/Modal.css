@@ -13,7 +13,7 @@
 }
 
 .modal-container {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do modal ajustado */
   border-radius: var(--border-radius);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -40,20 +40,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color); /* Borda do header ajustada */
 }
 
 .modal-title {
   margin: 0;
   font-size: 1.25rem;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do título do modal (Ciano) */
 }
 
 .modal-close {
   background: transparent;
   border: none;
   font-size: 1.25rem;
-  color: #666;
+  color: var(--text-color); /* Cor do botão fechar */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -65,8 +65,8 @@
 }
 
 .modal-close:hover {
-  background-color: #f5f5f5;
-  color: var(--danger-color);
+  background-color: rgba(var(--danger-color-rgb, 220, 53, 69), 0.1); /* Fundo do hover do botão fechar */
+  color: var(--danger-color); /* Cor do hover do botão fechar */
 }
 
 .modal-content {

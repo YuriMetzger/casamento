@@ -1,6 +1,6 @@
 .navbar {
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-color-light); /* Fundo da navbar ajustado */
+  box-shadow: var(--box-shadow); /* Sombra ajustada */
   padding: 1rem 0;
   position: sticky;
   top: 0;
@@ -18,7 +18,7 @@
   align-items: center;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do logo ajustada (Ciano) */
 }
 
 .logo-icon {
@@ -37,7 +37,7 @@
   flex-direction: column;
   align-items: center;
   padding: 0.5rem 1rem;
-  color: var(--text-color);
+  color: var(--text-color); /* Cor padrão do link ajustada */
   font-weight: 500;
   border-radius: var(--border-radius);
   transition: var(--transition);
@@ -49,13 +49,13 @@
 }
 
 .navbar-links li.active a {
-  color: var(--primary-color);
-  background-color: var(--accent-color);
+  color: var(--accent-color); /* Cor do link ativo (Verde Neon) */
+  background-color: rgba(var(--primary-color-rgb), 0.15); /* Fundo do link ativo */
 }
 
 .navbar-links li a:hover {
-  color: var(--primary-color);
-  background-color: rgba(230, 230, 250, 0.5);
+  color: var(--secondary-color); /* Cor do hover do link (Ciano) */
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.1); /* Fundo do hover do link */
 }
 
 @media (max-width: 768px) {

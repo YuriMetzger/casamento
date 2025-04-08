@@ -1,5 +1,5 @@
 .foto-form-container {
-  background-color: white;
+  background-color: var(--background-color-light); /* Fundo do container ajustado */
   border-radius: var(--border-radius);
   padding: 2rem;
   box-shadow: var(--box-shadow);
@@ -19,7 +19,7 @@
 
 .form-group label {
   font-weight: 500;
-  color: var(--primary-color);
+  color: var(--text-color); /* Cor do label ajustada */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -29,16 +29,19 @@
 .form-group textarea,
 .form-group select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do input/select ajustada */
   border-radius: var(--border-radius);
   font-size: 1rem;
+  background-color: var(--background-color); /* Fundo do input/select */
+  color: var(--text-color); /* Cor do texto do input/select */
 }
 
 .form-group input[type="text"]:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  border-color: var(--primary-color);
+  border-color: var(--secondary-color); /* Cor da borda no foco (Ciano) */
   outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--secondary-color-rgb, 4, 186, 222), 0.2); /* Sombra no foco */
 }
 
 .form-group input.error,
@@ -55,7 +58,7 @@
 
 .image-preview {
   margin-top: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color); /* Borda do preview da imagem */
   border-radius: var(--border-radius);
   overflow: hidden;
   max-width: 300px;
@@ -79,8 +82,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #f5f5f5;
-  color: #666;
+  background-color: var(--border-color); /* Fundo do botão cancelar */
+  color: var(--text-color); /* Cor do texto do botão cancelar */
   border: none;
   border-radius: var(--border-radius);
   font-weight: 500;
@@ -89,7 +92,7 @@
 }
 
 .btn-cancel:hover {
-  background-color: #e0e0e0;
+  background-color: #444; /* Hover do botão cancelar */
 }
 
 .btn-save {
@@ -97,7 +100,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Botão salvar usa cor primária */
   color: white;
   border: none;
   border-radius: var(--border-radius);
@@ -107,7 +110,7 @@
 }
 
 .btn-save:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão salvar usa cor secundária */
   transform: translateY(-2px);
 }
 
@@ -117,7 +120,7 @@
   align-items: center;
   height: 200px;
   font-style: italic;
-  color: #666;
+  color: var(--text-color); /* Cor do texto de loading */
 }
 
 @media (max-width: 768px) {

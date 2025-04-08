@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Botão adicionar usa cor primária */
   color: white;
   padding: 0.75rem 1.25rem;
   border-radius: var(--border-radius);
@@ -18,7 +18,7 @@
 }
 
 .btn-add:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Hover do botão adicionar usa cor secundária */
   transform: translateY(-2px);
 }
 
@@ -32,17 +32,17 @@
 .despesas-table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color); /* Borda da tabela de despesas */
 }
 
 .despesas-table th {
-  background-color: var(--accent-color);
+  background-color: var(--background-color-light); /* Fundo do cabeçalho da tabela */
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--secondary-color); /* Cor do texto do cabeçalho (Ciano) */
 }
 
 .despesas-table tr:hover {
-  background-color: rgba(230, 230, 250, 0.3);
+  background-color: rgba(var(--primary-color-rgb), 0.1); /* Hover da linha da tabela */
 }
 
 .status-badge {
@@ -54,13 +54,13 @@
 }
 
 .status-pago {
-  background-color: rgba(76, 175, 80, 0.2);
-  color: var(--success-color);
+  background-color: rgba(40, 167, 69, 0.2); /* Fundo do badge pago */
+  color: #28a745; /* Cor do texto do badge pago */
 }
 
 .status-pendente {
-  background-color: rgba(255, 152, 0, 0.2);
-  color: var(--warning-color);
+  background-color: rgba(255, 193, 7, 0.2); /* Fundo do badge pendente */
+  color: #ffc107; /* Cor do texto do badge pendente */
 }
 
 .action-buttons {
@@ -70,32 +70,40 @@
 
 .btn-edit,
 .btn-delete {
+  background: none; /* Remover fundo */
+  border: none; /* Remover borda */
+  color: var(--text-color); /* Cor padrão do ícone */
+  cursor: pointer;
+  padding: 0.25rem; /* Pequeno padding para área de clique */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
   transition: var(--transition);
+  border-radius: 4px; /* Leve arredondamento para o hover */
 }
 
 .btn-edit {
-  background-color: var(--primary-color);
+  color: var(--secondary-color); /* Ícone de editar em Ciano */
 }
 
 .btn-delete {
-  background-color: var(--danger-color);
+  color: var(--danger-color); /* Ícone de deletar em Vermelho */
 }
 
-.btn-edit:hover,
+.btn-edit:hover {
+  color: var(--accent-color); /* Hover do ícone editar (Verde Neon) */
+  background-color: rgba(var(--secondary-color-rgb, 4, 186, 222), 0.1); /* Fundo sutil no hover */
+}
+
 .btn-delete:hover {
-  transform: translateY(-2px);
+  color: #ff5c5c; /* Hover do ícone deletar (Vermelho mais claro) */
+  background-color: rgba(var(--danger-color-rgb, 220, 53, 69), 0.1); /* Fundo sutil no hover */
 }
 
 .no-data {
   text-align: center;
   padding: 2rem;
-  color: #666;
+  color: var(--text-color); /* Cor do texto "sem dados" */
   font-style: italic;
 }
 
@@ -109,15 +117,15 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #ccc;
-  color: #333;
+  background-color: var(--border-color); /* Fundo do botão cancelar no modal */
+  color: var(--text-color); /* Cor do texto do botão cancelar no modal */
 }
 
 .btn-save {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--success-color);
+  background-color: var(--success-color); /* Botão salvar no modal usa cor de sucesso */
 }
 
 @media (max-width: 768px) {
