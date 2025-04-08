@@ -1,0 +1,50 @@
+.progress-component {
+  margin-bottom: 1.5rem;
+}
+
+.progress-label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.progress-container {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.progress-success {
+  background-color: var(--success-color);
+}
+
+.progress-warning {
+  background-color: var(--warning-color);
+}
+
+.progress-danger {
+  background-color: var(--danger-color);
+}
+
+.progress-primary {
+  background-color: var(--primary-color);
+}
+
+.progress-secondary {
+  background-color: var(--secondary-color);
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #666;
+}
