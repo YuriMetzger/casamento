@@ -8,7 +8,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuração do banco de dados
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///casamento.db'
+# Usar o banco de dados na pasta instance
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/temp/planilha_casamento/casamento/instance/casamento.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -31,6 +32,66 @@ class Orcamento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valor_total = db.Column(db.Float, nullable=False)
     data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+# Modelos para Referências
+class Referencia(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data_casamento = db.Column(db.Date, nullable=True)
+    foto_noivos = db.Column(db.String(500), nullable=True)
+    logo_casamento = db.Column(db.String(500), nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    cores = db.relationship('CorPaleta', backref='referencia', lazy=True, cascade='all, delete-orphan')
+    fotos = db.relationship('FotoReferencia', backref='referencia', lazy=True, cascade='all, delete-orphan')
+
+class CorPaleta(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    codigo_hex = db.Column(db.String(7), nullable=False)  # Formato: #RRGGBB
+    nome = db.Column(db.String(50), nullable=True)
+    referencia_id = db.Column(db.Integer, db.ForeignKey('referencia.id'), nullable=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+
+class CategoriaFoto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.String(200), nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    fotos = db.relationship('FotoReferencia', backref='categoria', lazy=True)
+
+class FotoReferencia(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(500), nullable=False)
+    descricao = db.Column(db.String(200), nullable=True)
+    referencia_id = db.Column(db.Integer, db.ForeignKey('referencia.id'), nullable=False)
+    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria_foto.id'), nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Modelos para Checklists
+class CategoriaChecklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.String(200))
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    checklists = db.relationship('Checklist', backref='categoria_checklist', lazy=True, cascade='all, delete-orphan')
+
+class Checklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(100), nullable=False)
+    descricao = db.Column(db.String(200))
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria_checklist.id'), nullable=False)
+    tarefas = db.relationship('Tarefa', backref='checklist', lazy=True, cascade='all, delete-orphan')
+
+class Tarefa(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.String(200), nullable=False)
+    concluida = db.Column(db.Boolean, default=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    data_conclusao = db.Column(db.DateTime)
+    checklist_id = db.Column(db.Integer, db.ForeignKey('checklist.id'), nullable=False)
 
 # Criar o banco de dados
 with app.app_context():
@@ -282,6 +343,327 @@ def pagina_inicial():
     </html>
     '''
     return render_template_string(html)
+
+# Rotas para Categorias de Checklist
+@app.route('/api/categorias-checklist', methods=['GET'])
+def obter_categorias_checklist():
+    categorias = CategoriaChecklist.query.all()
+    return jsonify([{
+        'id': c.id,
+        'nome': c.nome,
+        'descricao': c.descricao,
+        'data_criacao': c.data_criacao.isoformat() if c.data_criacao else None,
+        'data_atualizacao': c.data_atualizacao.isoformat() if c.data_atualizacao else None
+    } for c in categorias])
+
+@app.route('/api/categorias-checklist', methods=['POST'])
+def adicionar_categoria_checklist():
+    dados = request.json
+    nova_categoria = CategoriaChecklist(
+        nome=dados['nome'],
+        descricao=dados.get('descricao', '')
+    )
+    db.session.add(nova_categoria)
+    db.session.commit()
+    return jsonify({
+        'id': nova_categoria.id,
+        'nome': nova_categoria.nome,
+        'descricao': nova_categoria.descricao,
+        'data_criacao': nova_categoria.data_criacao.isoformat() if nova_categoria.data_criacao else None,
+        'data_atualizacao': nova_categoria.data_atualizacao.isoformat() if nova_categoria.data_atualizacao else None
+    }), 201
+
+@app.route('/api/categorias-checklist/<int:id>', methods=['PUT'])
+def atualizar_categoria_checklist(id):
+    categoria = CategoriaChecklist.query.get_or_404(id)
+    dados = request.json
+    categoria.nome = dados.get('nome', categoria.nome)
+    categoria.descricao = dados.get('descricao', categoria.descricao)
+    db.session.commit()
+    return jsonify({
+        'id': categoria.id,
+        'nome': categoria.nome,
+        'descricao': categoria.descricao,
+        'data_criacao': categoria.data_criacao.isoformat() if categoria.data_criacao else None,
+        'data_atualizacao': categoria.data_atualizacao.isoformat() if categoria.data_atualizacao else None
+    })
+
+@app.route('/api/categorias-checklist/<int:id>', methods=['DELETE'])
+def excluir_categoria_checklist(id):
+    categoria = CategoriaChecklist.query.get_or_404(id)
+    db.session.delete(categoria)
+    db.session.commit()
+    return jsonify({'mensagem': 'Categoria de checklist excluída com sucesso'})
+
+# Rotas para Checklists
+@app.route('/api/checklists', methods=['GET'])
+def obter_checklists():
+    checklists = Checklist.query.all()
+    resultado = []
+    for c in checklists:
+        categoria = CategoriaChecklist.query.get(c.categoria_id)
+        resultado.append({
+            'id': c.id,
+            'titulo': c.titulo,
+            'descricao': c.descricao,
+            'data_criacao': c.data_criacao.isoformat() if c.data_criacao else None,
+            'data_atualizacao': c.data_atualizacao.isoformat() if c.data_atualizacao else None,
+            'categoria_id': c.categoria_id,
+            'categoria_nome': categoria.nome if categoria else None
+        })
+    return jsonify(resultado)
+
+@app.route('/api/categorias-checklist/<int:categoria_id>/checklists', methods=['GET'])
+def obter_checklists_por_categoria(categoria_id):
+    checklists = Checklist.query.filter_by(categoria_id=categoria_id).all()
+    categoria = CategoriaChecklist.query.get_or_404(categoria_id)
+    resultado = [{
+        'id': c.id,
+        'titulo': c.titulo,
+        'descricao': c.descricao,
+        'data_criacao': c.data_criacao.isoformat() if c.data_criacao else None,
+        'data_atualizacao': c.data_atualizacao.isoformat() if c.data_atualizacao else None,
+        'categoria_id': c.categoria_id,
+        'categoria_nome': categoria.nome
+    } for c in checklists]
+    return jsonify(resultado)
+
+@app.route('/api/checklists', methods=['POST'])
+def adicionar_checklist():
+    dados = request.json
+    novo_checklist = Checklist(
+        titulo=dados['titulo'],
+        descricao=dados.get('descricao', ''),
+        categoria_id=dados['categoria_id']
+    )
+    db.session.add(novo_checklist)
+    db.session.commit()
+
+    categoria = CategoriaChecklist.query.get(novo_checklist.categoria_id)
+    return jsonify({
+        'id': novo_checklist.id,
+        'titulo': novo_checklist.titulo,
+        'descricao': novo_checklist.descricao,
+        'data_criacao': novo_checklist.data_criacao.isoformat() if novo_checklist.data_criacao else None,
+        'data_atualizacao': novo_checklist.data_atualizacao.isoformat() if novo_checklist.data_atualizacao else None,
+        'categoria_id': novo_checklist.categoria_id,
+        'categoria_nome': categoria.nome if categoria else None
+    }), 201
+
+@app.route('/api/checklists/<int:id>', methods=['PUT'])
+def atualizar_checklist(id):
+    checklist = Checklist.query.get_or_404(id)
+    dados = request.json
+    checklist.titulo = dados.get('titulo', checklist.titulo)
+    checklist.descricao = dados.get('descricao', checklist.descricao)
+    checklist.categoria_id = dados.get('categoria_id', checklist.categoria_id)
+    db.session.commit()
+
+    categoria = CategoriaChecklist.query.get(checklist.categoria_id)
+    return jsonify({
+        'id': checklist.id,
+        'titulo': checklist.titulo,
+        'descricao': checklist.descricao,
+        'data_criacao': checklist.data_criacao.isoformat() if checklist.data_criacao else None,
+        'data_atualizacao': checklist.data_atualizacao.isoformat() if checklist.data_atualizacao else None,
+        'categoria_id': checklist.categoria_id,
+        'categoria_nome': categoria.nome if categoria else None
+    })
+
+@app.route('/api/checklists/<int:id>', methods=['DELETE'])
+def excluir_checklist(id):
+    checklist = Checklist.query.get_or_404(id)
+    db.session.delete(checklist)
+    db.session.commit()
+    return jsonify({'mensagem': 'Checklist excluído com sucesso'})
+
+# Rotas para Tarefas
+@app.route('/api/categorias-checklist/<int:categoria_id>/tarefas', methods=['GET'])
+def obter_tarefas_por_categoria(categoria_id):
+    # Obter todos os checklists da categoria
+    checklists = Checklist.query.filter_by(categoria_id=categoria_id).all()
+
+    # Obter todas as tarefas de todos os checklists da categoria
+    resultado = []
+    for checklist in checklists:
+        tarefas = Tarefa.query.filter_by(checklist_id=checklist.id).all()
+        for t in tarefas:
+            resultado.append({
+                'id': t.id,
+                'descricao': t.descricao,
+                'concluida': t.concluida,
+                'data_criacao': t.data_criacao.isoformat() if t.data_criacao else None,
+                'data_atualizacao': t.data_atualizacao.isoformat() if t.data_atualizacao else None,
+                'data_conclusao': t.data_conclusao.isoformat() if t.data_conclusao else None,
+                'checklist_id': t.checklist_id,
+                'checklist_titulo': checklist.titulo
+            })
+
+    return jsonify(resultado)
+
+@app.route('/api/checklists/<int:checklist_id>/tarefas', methods=['GET'])
+def obter_tarefas_por_checklist(checklist_id):
+    tarefas = Tarefa.query.filter_by(checklist_id=checklist_id).all()
+    checklist = Checklist.query.get_or_404(checklist_id)
+
+    return jsonify([{
+        'id': t.id,
+        'descricao': t.descricao,
+        'concluida': t.concluida,
+        'data_criacao': t.data_criacao.isoformat() if t.data_criacao else None,
+        'data_atualizacao': t.data_atualizacao.isoformat() if t.data_atualizacao else None,
+        'data_conclusao': t.data_conclusao.isoformat() if t.data_conclusao else None,
+        'checklist_id': t.checklist_id,
+        'checklist_titulo': checklist.titulo
+    } for t in tarefas])
+
+@app.route('/api/tarefas', methods=['POST'])
+def adicionar_tarefa():
+    dados = request.json
+
+    # Se recebemos categoria_id em vez de checklist_id, precisamos criar ou obter um checklist padrão
+    if 'categoria_id' in dados and 'checklist_id' not in dados:
+        categoria_id = dados['categoria_id']
+        # Verificar se já existe um checklist padrão para esta categoria
+        checklist = Checklist.query.filter_by(categoria_id=categoria_id, titulo='Tarefas').first()
+
+        if not checklist:
+            # Criar um checklist padrão para a categoria
+            checklist = Checklist(
+                titulo='Tarefas',
+                descricao='Lista de tarefas',
+                categoria_id=categoria_id
+            )
+            db.session.add(checklist)
+            db.session.commit()
+
+        checklist_id = checklist.id
+    else:
+        checklist_id = dados['checklist_id']
+
+    nova_tarefa = Tarefa(
+        descricao=dados['descricao'],
+        concluida=dados.get('concluida', False),
+        checklist_id=checklist_id,
+        data_conclusao=datetime.fromisoformat(dados['data_conclusao']) if dados.get('data_conclusao') else None
+    )
+    db.session.add(nova_tarefa)
+    db.session.commit()
+
+    checklist = Checklist.query.get(nova_tarefa.checklist_id)
+
+    return jsonify({
+        'id': nova_tarefa.id,
+        'descricao': nova_tarefa.descricao,
+        'concluida': nova_tarefa.concluida,
+        'data_criacao': nova_tarefa.data_criacao.isoformat() if nova_tarefa.data_criacao else None,
+        'data_atualizacao': nova_tarefa.data_atualizacao.isoformat() if nova_tarefa.data_atualizacao else None,
+        'data_conclusao': nova_tarefa.data_conclusao.isoformat() if nova_tarefa.data_conclusao else None,
+        'checklist_id': nova_tarefa.checklist_id,
+        'checklist_titulo': checklist.titulo if checklist else None
+    }), 201
+
+@app.route('/api/tarefas/<int:id>', methods=['PUT'])
+def atualizar_tarefa(id):
+    tarefa = Tarefa.query.get_or_404(id)
+    dados = request.json
+    tarefa.descricao = dados.get('descricao', tarefa.descricao)
+
+    # Se a tarefa foi marcada como concluída e não estava antes, atualizar a data de conclusão
+    if dados.get('concluida', tarefa.concluida) and not tarefa.concluida:
+        tarefa.data_conclusao = datetime.utcnow()
+    # Se a tarefa foi desmarcada, remover a data de conclusão
+    elif not dados.get('concluida', tarefa.concluida) and tarefa.concluida:
+        tarefa.data_conclusao = None
+
+    tarefa.concluida = dados.get('concluida', tarefa.concluida)
+    # Se recebemos categoria_id, precisamos atualizar o checklist_id
+    if 'categoria_id' in dados:
+        categoria_id = dados['categoria_id']
+        # Verificar se já existe um checklist padrão para esta categoria
+        checklist = Checklist.query.filter_by(categoria_id=categoria_id, titulo='Tarefas').first()
+
+        if not checklist:
+            # Criar um checklist padrão para a categoria
+            checklist = Checklist(
+                titulo='Tarefas',
+                descricao='Lista de tarefas',
+                categoria_id=categoria_id
+            )
+            db.session.add(checklist)
+            db.session.commit()
+
+        tarefa.checklist_id = checklist.id
+    else:
+        tarefa.checklist_id = dados.get('checklist_id', tarefa.checklist_id)
+
+    db.session.commit()
+    return jsonify({
+        'id': tarefa.id,
+        'descricao': tarefa.descricao,
+        'concluida': tarefa.concluida,
+        'data_criacao': tarefa.data_criacao.isoformat() if tarefa.data_criacao else None,
+        'data_atualizacao': tarefa.data_atualizacao.isoformat() if tarefa.data_atualizacao else None,
+        'data_conclusao': tarefa.data_conclusao.isoformat() if tarefa.data_conclusao else None,
+        'checklist_id': tarefa.checklist_id
+    })
+
+@app.route('/api/tarefas/<int:id>', methods=['DELETE'])
+def excluir_tarefa(id):
+    tarefa = Tarefa.query.get_or_404(id)
+    db.session.delete(tarefa)
+    db.session.commit()
+    return jsonify({'mensagem': 'Tarefa excluída com sucesso'})
+
+# Rota para estatísticas de checklists
+@app.route('/api/estatisticas-checklists', methods=['GET'])
+def obter_estatisticas_checklists():
+    categorias = CategoriaChecklist.query.all()
+    resultado = []
+
+    total_tarefas = 0
+    total_concluidas = 0
+
+    for categoria in categorias:
+        checklists = Checklist.query.filter_by(categoria_id=categoria.id).all()
+        categoria_tarefas = 0
+        categoria_concluidas = 0
+
+        checklists_info = []
+        for checklist in checklists:
+            tarefas = Tarefa.query.filter_by(checklist_id=checklist.id).all()
+            total_checklist = len(tarefas)
+            concluidas_checklist = sum(1 for t in tarefas if t.concluida)
+
+            categoria_tarefas += total_checklist
+            categoria_concluidas += concluidas_checklist
+
+            checklists_info.append({
+                'id': checklist.id,
+                'titulo': checklist.titulo,
+                'total_tarefas': total_checklist,
+                'tarefas_concluidas': concluidas_checklist,
+                'percentual': (concluidas_checklist / total_checklist * 100) if total_checklist > 0 else 0
+            })
+
+        total_tarefas += categoria_tarefas
+        total_concluidas += categoria_concluidas
+
+        resultado.append({
+            'id': categoria.id,
+            'nome': categoria.nome,
+            'total_tarefas': categoria_tarefas,
+            'tarefas_concluidas': categoria_concluidas,
+            'percentual': (categoria_concluidas / categoria_tarefas * 100) if categoria_tarefas > 0 else 0,
+            'checklists': checklists_info
+        })
+
+    return jsonify({
+        'categorias': resultado,
+        'total_tarefas': total_tarefas,
+        'total_concluidas': total_concluidas,
+        'percentual_geral': (total_concluidas / total_tarefas * 100) if total_tarefas > 0 else 0
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

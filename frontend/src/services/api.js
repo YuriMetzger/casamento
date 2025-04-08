@@ -13,17 +13,17 @@ export const categoriasService = {
     const response = await api.get('/categorias');
     return response.data;
   },
-  
+
   adicionar: async (categoria) => {
     const response = await api.post('/categorias', categoria);
     return response.data;
   },
-  
+
   atualizar: async (id, categoria) => {
     const response = await api.put(`/categorias/${id}`, categoria);
     return response.data;
   },
-  
+
   excluir: async (id) => {
     const response = await api.delete(`/categorias/${id}`);
     return response.data;
@@ -36,17 +36,17 @@ export const despesasService = {
     const response = await api.get('/despesas');
     return response.data;
   },
-  
+
   adicionar: async (despesa) => {
     const response = await api.post('/despesas', despesa);
     return response.data;
   },
-  
+
   atualizar: async (id, despesa) => {
     const response = await api.put(`/despesas/${id}`, despesa);
     return response.data;
   },
-  
+
   excluir: async (id) => {
     const response = await api.delete(`/despesas/${id}`);
     return response.data;
@@ -59,7 +59,7 @@ export const orcamentoService = {
     const response = await api.get('/orcamento');
     return response.data;
   },
-  
+
   atualizar: async (orcamento) => {
     const response = await api.put('/orcamento', orcamento);
     return response.data;
@@ -70,6 +70,98 @@ export const orcamentoService = {
 export const estatisticasService = {
   obter: async () => {
     const response = await api.get('/estatisticas');
+    return response.data;
+  }
+};
+
+// Serviços para Categorias de Checklist
+export const categoriasChecklistService = {
+  listarTodas: async () => {
+    const response = await api.get('/categorias-checklist');
+    return response.data;
+  },
+
+  adicionar: async (categoria) => {
+    const response = await api.post('/categorias-checklist', categoria);
+    return response.data;
+  },
+
+  atualizar: async (id, categoria) => {
+    const response = await api.put(`/categorias-checklist/${id}`, categoria);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/categorias-checklist/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Checklists
+export const checklistsService = {
+  listarTodos: async () => {
+    const response = await api.get('/checklists');
+    return response.data;
+  },
+
+  listarPorCategoria: async (categoriaId) => {
+    const response = await api.get(`/categorias-checklist/${categoriaId}/checklists`);
+    return response.data;
+  },
+
+  adicionar: async (checklist) => {
+    const response = await api.post('/checklists', checklist);
+    return response.data;
+  },
+
+  atualizar: async (id, checklist) => {
+    const response = await api.put(`/checklists/${id}`, checklist);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/checklists/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Tarefas
+export const tarefasService = {
+  listarPorChecklist: async (checklistId) => {
+    const response = await api.get(`/checklists/${checklistId}/tarefas`);
+    return response.data;
+  },
+
+  listarPorCategoria: async (categoriaId) => {
+    const response = await api.get(`/categorias-checklist/${categoriaId}/tarefas`);
+    return response.data;
+  },
+
+  adicionar: async (tarefa) => {
+    const response = await api.post('/tarefas', tarefa);
+    return response.data;
+  },
+
+  atualizar: async (id, tarefa) => {
+    const response = await api.put(`/tarefas/${id}`, tarefa);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/tarefas/${id}`);
+    return response.data;
+  },
+
+  marcarConcluida: async (id, concluida = true) => {
+    const response = await api.put(`/tarefas/${id}`, { concluida });
+    return response.data;
+  }
+};
+
+// Serviços para Estatísticas de Checklists
+export const estatisticasChecklistService = {
+  obter: async () => {
+    const response = await api.get('/estatisticas-checklists');
     return response.data;
   }
 };

@@ -1,0 +1,3 @@
+- pagina de referencias, onde posso colocar (uma ou várias cores para definir a paleta do casamento), ainda na pagina de referencias quero poder adicionar fotos e categorizar as fotos (cerimonia, festa, vestimentas e etc)
+- Pagina com campo de texto na pagina inteira onde eu possa adicionar fotos, colocar textos, alterar texto para negrito e afins
+- Criar uma agenda para cadastrar compromissos, e adicionar na pagina inicial qual será o próximo evento da semana

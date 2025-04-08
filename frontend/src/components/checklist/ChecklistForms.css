@@ -1,0 +1,240 @@
+.checklist-form-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 2rem;
+}
+
+.checklist-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(106, 90, 205, 0.2);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: var(--danger-color);
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #e0e0e0;
+  color: #666;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-save {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-save:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.tarefa-input-container,
+.checklist-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.checklist-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.checklist-input-field {
+  flex: 1;
+}
+
+.btn-add-tarefa,
+.btn-add-checklist {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-add-tarefa:hover,
+.btn-add-checklist:hover {
+  background-color: var(--secondary-color);
+}
+
+.tarefas-list,
+.checklists-list {
+  margin-top: 1rem;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.tarefa-item,
+.checklist-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  background-color: white;
+  transition: var(--transition);
+}
+
+.tarefa-item:last-child,
+.checklist-item:last-child {
+  border-bottom: none;
+}
+
+.tarefa-item:hover,
+.checklist-item:hover {
+  background-color: var(--accent-color);
+}
+
+.tarefa-descricao {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.checklist-item-content {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.checklist-item-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+.checklist-item-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.btn-remove-tarefa,
+.btn-remove-checklist {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--danger-color);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-remove-tarefa:hover,
+.btn-remove-checklist:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.no-tarefas,
+.no-checklists {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 768px) {
+  .checklist-form-container {
+    padding: 1.5rem;
+  }
+
+  .tarefa-input-container,
+  .checklist-input-container,
+  .checklist-input-row {
+    flex-direction: column;
+  }
+
+  .btn-add-tarefa {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    width: 100%;
+    justify-content: center;
+  }
+}

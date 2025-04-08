@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Despesas from './pages/Despesas';
 import Categorias from './pages/Categorias';
 import Orcamento from './pages/Orcamento';
+import Checklists from './pages/Checklists';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
@@ -19,6 +20,7 @@ function App() {
             <Route path="/despesas" element={<Despesas />} />
             <Route path="/categorias" element={<Categorias />} />
             <Route path="/orcamento" element={<Orcamento />} />
+            <Route path="/checklists/*" element={<Checklists />} />
           </Routes>
         </main>
         <Footer />
