@@ -166,4 +166,119 @@ export const estatisticasChecklistService = {
   }
 };
 
+// Serviços para Referências
+export const referenciasService = {
+  listarTodas: async () => {
+    const response = await api.get('/referencias');
+    return response.data;
+  },
+
+  obterPorId: async (id) => {
+    const response = await api.get(`/referencias/${id}`);
+    return response.data;
+  },
+
+  adicionar: async (referencia) => {
+    const response = await api.post('/referencias', referencia);
+    return response.data;
+  },
+
+  atualizar: async (id, referencia) => {
+    const response = await api.put(`/referencias/${id}`, referencia);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/referencias/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Cores da Paleta
+export const coresService = {
+  listarPorReferencia: async (referenciaId) => {
+    const response = await api.get(`/referencias/${referenciaId}/cores`);
+    return response.data;
+  },
+
+  adicionar: async (cor) => {
+    const response = await api.post('/cores', cor);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/cores/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Categorias de Fotos
+export const categoriasFotoService = {
+  listarTodas: async () => {
+    const response = await api.get('/categorias-foto');
+    return response.data;
+  },
+
+  adicionar: async (categoria) => {
+    const response = await api.post('/categorias-foto', categoria);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/categorias-foto/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Fotos de Referência
+export const fotosService = {
+  listarPorReferencia: async (referenciaId) => {
+    const response = await api.get(`/referencias/${referenciaId}/fotos`);
+    return response.data;
+  },
+
+  adicionar: async (foto) => {
+    const response = await api.post('/fotos', foto);
+    return response.data;
+  },
+
+  atualizar: async (id, foto) => {
+    const response = await api.put(`/fotos/${id}`, foto);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/fotos/${id}`);
+    return response.data;
+  }
+};
+
+// Serviços para Notas
+export const notasService = {
+  listarTodas: async () => {
+    const response = await api.get('/notas');
+    return response.data;
+  },
+
+  obterPorId: async (id) => {
+    const response = await api.get(`/notas/${id}`);
+    return response.data;
+  },
+
+  adicionar: async (nota) => {
+    const response = await api.post('/notas', nota);
+    return response.data;
+  },
+
+  atualizar: async (id, nota) => {
+    const response = await api.put(`/notas/${id}`, nota);
+    return response.data;
+  },
+
+  excluir: async (id) => {
+    const response = await api.delete(`/notas/${id}`);
+    return response.data;
+  }
+};
+
 export default api;

@@ -33,6 +33,14 @@ class Orcamento(db.Model):
     valor_total = db.Column(db.Float, nullable=False)
     data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+# Modelos para Notas
+class Nota(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(200), nullable=False)
+    conteudo = db.Column(db.Text, nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.utcnow)
+    data_atualizacao = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 # Modelos para Referências
 class Referencia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -664,6 +672,381 @@ def obter_estatisticas_checklists():
         'total_concluidas': total_concluidas,
         'percentual_geral': (total_concluidas / total_tarefas * 100) if total_tarefas > 0 else 0
     })
+
+# Rotas para Referências
+@app.route('/api/referencias', methods=['GET'])
+def obter_referencias():
+    referencias = Referencia.query.all()
+    resultado = []
+
+    for ref in referencias:
+        cores = CorPaleta.query.filter_by(referencia_id=ref.id).all()
+        fotos = FotoReferencia.query.filter_by(referencia_id=ref.id).all()
+
+        fotos_data = []
+        for foto in fotos:
+            categoria = CategoriaFoto.query.get(foto.categoria_id) if foto.categoria_id else None
+            fotos_data.append({
+                'id': foto.id,
+                'url': foto.url,
+                'descricao': foto.descricao,
+                'categoria_id': foto.categoria_id,
+                'categoria_nome': categoria.nome if categoria else None,
+                'data_criacao': foto.data_criacao.isoformat() if foto.data_criacao else None
+            })
+
+        resultado.append({
+            'id': ref.id,
+            'data_casamento': ref.data_casamento.isoformat() if ref.data_casamento else None,
+            'foto_noivos': ref.foto_noivos,
+            'logo_casamento': ref.logo_casamento,
+            'data_criacao': ref.data_criacao.isoformat() if ref.data_criacao else None,
+            'data_atualizacao': ref.data_atualizacao.isoformat() if ref.data_atualizacao else None,
+            'cores': [{
+                'id': cor.id,
+                'codigo_hex': cor.codigo_hex,
+                'nome': cor.nome
+            } for cor in cores],
+            'fotos': fotos_data
+        })
+
+    return jsonify(resultado)
+
+@app.route('/api/referencias/<int:id>', methods=['GET'])
+def obter_referencia(id):
+    ref = Referencia.query.get_or_404(id)
+    cores = CorPaleta.query.filter_by(referencia_id=ref.id).all()
+    fotos = FotoReferencia.query.filter_by(referencia_id=ref.id).all()
+
+    fotos_data = []
+    for foto in fotos:
+        categoria = CategoriaFoto.query.get(foto.categoria_id) if foto.categoria_id else None
+        fotos_data.append({
+            'id': foto.id,
+            'url': foto.url,
+            'descricao': foto.descricao,
+            'categoria_id': foto.categoria_id,
+            'categoria_nome': categoria.nome if categoria else None,
+            'data_criacao': foto.data_criacao.isoformat() if foto.data_criacao else None
+        })
+
+    return jsonify({
+        'id': ref.id,
+        'data_casamento': ref.data_casamento.isoformat() if ref.data_casamento else None,
+        'foto_noivos': ref.foto_noivos,
+        'logo_casamento': ref.logo_casamento,
+        'data_criacao': ref.data_criacao.isoformat() if ref.data_criacao else None,
+        'data_atualizacao': ref.data_atualizacao.isoformat() if ref.data_atualizacao else None,
+        'cores': [{
+            'id': cor.id,
+            'codigo_hex': cor.codigo_hex,
+            'nome': cor.nome
+        } for cor in cores],
+        'fotos': fotos_data
+    })
+
+@app.route('/api/referencias', methods=['POST'])
+def adicionar_referencia():
+    dados = request.json
+
+    # Converter a data de string para objeto Date, se fornecida
+    data_casamento = None
+    if dados.get('data_casamento'):
+        try:
+            data_casamento = datetime.fromisoformat(dados['data_casamento']).date()
+        except ValueError:
+            return jsonify({'erro': 'Formato de data inválido. Use o formato ISO (YYYY-MM-DD)'}), 400
+
+    nova_referencia = Referencia(
+        data_casamento=data_casamento,
+        foto_noivos=dados.get('foto_noivos'),
+        logo_casamento=dados.get('logo_casamento')
+    )
+
+    db.session.add(nova_referencia)
+    db.session.commit()
+
+    # Adicionar cores, se fornecidas
+    if 'cores' in dados and isinstance(dados['cores'], list):
+        for cor_data in dados['cores']:
+            nova_cor = CorPaleta(
+                codigo_hex=cor_data['codigo_hex'],
+                nome=cor_data.get('nome'),
+                referencia_id=nova_referencia.id
+            )
+            db.session.add(nova_cor)
+
+    db.session.commit()
+
+    return jsonify({
+        'id': nova_referencia.id,
+        'data_casamento': nova_referencia.data_casamento.isoformat() if nova_referencia.data_casamento else None,
+        'foto_noivos': nova_referencia.foto_noivos,
+        'logo_casamento': nova_referencia.logo_casamento,
+        'data_criacao': nova_referencia.data_criacao.isoformat() if nova_referencia.data_criacao else None,
+        'data_atualizacao': nova_referencia.data_atualizacao.isoformat() if nova_referencia.data_atualizacao else None
+    }), 201
+
+@app.route('/api/referencias/<int:id>', methods=['PUT'])
+def atualizar_referencia(id):
+    ref = Referencia.query.get_or_404(id)
+    dados = request.json
+
+    # Atualizar data do casamento, se fornecida
+    if 'data_casamento' in dados:
+        if dados['data_casamento']:
+            try:
+                ref.data_casamento = datetime.fromisoformat(dados['data_casamento']).date()
+            except ValueError:
+                return jsonify({'erro': 'Formato de data inválido. Use o formato ISO (YYYY-MM-DD)'}), 400
+        else:
+            ref.data_casamento = None
+
+    # Atualizar outros campos
+    if 'foto_noivos' in dados:
+        ref.foto_noivos = dados['foto_noivos']
+
+    if 'logo_casamento' in dados:
+        ref.logo_casamento = dados['logo_casamento']
+
+    db.session.commit()
+
+    return jsonify({
+        'id': ref.id,
+        'data_casamento': ref.data_casamento.isoformat() if ref.data_casamento else None,
+        'foto_noivos': ref.foto_noivos,
+        'logo_casamento': ref.logo_casamento,
+        'data_criacao': ref.data_criacao.isoformat() if ref.data_criacao else None,
+        'data_atualizacao': ref.data_atualizacao.isoformat() if ref.data_atualizacao else None
+    })
+
+@app.route('/api/referencias/<int:id>', methods=['DELETE'])
+def excluir_referencia(id):
+    ref = Referencia.query.get_or_404(id)
+    db.session.delete(ref)
+    db.session.commit()
+    return jsonify({'mensagem': 'Referência excluída com sucesso'})
+
+# Rotas para Cores da Paleta
+@app.route('/api/referencias/<int:referencia_id>/cores', methods=['GET'])
+def obter_cores(referencia_id):
+    cores = CorPaleta.query.filter_by(referencia_id=referencia_id).all()
+    return jsonify([{
+        'id': cor.id,
+        'codigo_hex': cor.codigo_hex,
+        'nome': cor.nome,
+        'referencia_id': cor.referencia_id,
+        'data_criacao': cor.data_criacao.isoformat() if cor.data_criacao else None
+    } for cor in cores])
+
+@app.route('/api/cores', methods=['POST'])
+def adicionar_cor():
+    dados = request.json
+    nova_cor = CorPaleta(
+        codigo_hex=dados['codigo_hex'],
+        nome=dados.get('nome'),
+        referencia_id=dados['referencia_id']
+    )
+    db.session.add(nova_cor)
+    db.session.commit()
+
+    return jsonify({
+        'id': nova_cor.id,
+        'codigo_hex': nova_cor.codigo_hex,
+        'nome': nova_cor.nome,
+        'referencia_id': nova_cor.referencia_id,
+        'data_criacao': nova_cor.data_criacao.isoformat() if nova_cor.data_criacao else None
+    }), 201
+
+@app.route('/api/cores/<int:id>', methods=['DELETE'])
+def excluir_cor(id):
+    cor = CorPaleta.query.get_or_404(id)
+    db.session.delete(cor)
+    db.session.commit()
+    return jsonify({'mensagem': 'Cor excluída com sucesso'})
+
+# Rotas para Categorias de Fotos
+@app.route('/api/categorias-foto', methods=['GET'])
+def obter_categorias_foto():
+    categorias = CategoriaFoto.query.all()
+    return jsonify([{
+        'id': cat.id,
+        'nome': cat.nome,
+        'descricao': cat.descricao,
+        'data_criacao': cat.data_criacao.isoformat() if cat.data_criacao else None
+    } for cat in categorias])
+
+@app.route('/api/categorias-foto', methods=['POST'])
+def adicionar_categoria_foto():
+    dados = request.json
+    nova_categoria = CategoriaFoto(
+        nome=dados['nome'],
+        descricao=dados.get('descricao')
+    )
+    db.session.add(nova_categoria)
+    db.session.commit()
+
+    return jsonify({
+        'id': nova_categoria.id,
+        'nome': nova_categoria.nome,
+        'descricao': nova_categoria.descricao,
+        'data_criacao': nova_categoria.data_criacao.isoformat() if nova_categoria.data_criacao else None
+    }), 201
+
+@app.route('/api/categorias-foto/<int:id>', methods=['DELETE'])
+def excluir_categoria_foto(id):
+    categoria = CategoriaFoto.query.get_or_404(id)
+    db.session.delete(categoria)
+    db.session.commit()
+    return jsonify({'mensagem': 'Categoria de foto excluída com sucesso'})
+
+# Rotas para Fotos de Referência
+@app.route('/api/referencias/<int:referencia_id>/fotos', methods=['GET'])
+def obter_fotos(referencia_id):
+    fotos = FotoReferencia.query.filter_by(referencia_id=referencia_id).all()
+    resultado = []
+
+    for foto in fotos:
+        categoria = CategoriaFoto.query.get(foto.categoria_id) if foto.categoria_id else None
+        resultado.append({
+            'id': foto.id,
+            'url': foto.url,
+            'descricao': foto.descricao,
+            'referencia_id': foto.referencia_id,
+            'categoria_id': foto.categoria_id,
+            'categoria_nome': categoria.nome if categoria else None,
+            'data_criacao': foto.data_criacao.isoformat() if foto.data_criacao else None
+        })
+
+    return jsonify(resultado)
+
+@app.route('/api/fotos', methods=['POST'])
+def adicionar_foto():
+    dados = request.json
+    nova_foto = FotoReferencia(
+        url=dados['url'],
+        descricao=dados.get('descricao'),
+        referencia_id=dados['referencia_id'],
+        categoria_id=dados.get('categoria_id')
+    )
+    db.session.add(nova_foto)
+    db.session.commit()
+
+    categoria = CategoriaFoto.query.get(nova_foto.categoria_id) if nova_foto.categoria_id else None
+
+    return jsonify({
+        'id': nova_foto.id,
+        'url': nova_foto.url,
+        'descricao': nova_foto.descricao,
+        'referencia_id': nova_foto.referencia_id,
+        'categoria_id': nova_foto.categoria_id,
+        'categoria_nome': categoria.nome if categoria else None,
+        'data_criacao': nova_foto.data_criacao.isoformat() if nova_foto.data_criacao else None
+    }), 201
+
+@app.route('/api/fotos/<int:id>', methods=['PUT'])
+def atualizar_foto(id):
+    foto = FotoReferencia.query.get_or_404(id)
+    dados = request.json
+
+    if 'url' in dados:
+        foto.url = dados['url']
+
+    if 'descricao' in dados:
+        foto.descricao = dados['descricao']
+
+    if 'categoria_id' in dados:
+        foto.categoria_id = dados['categoria_id']
+
+    db.session.commit()
+
+    categoria = CategoriaFoto.query.get(foto.categoria_id) if foto.categoria_id else None
+
+    return jsonify({
+        'id': foto.id,
+        'url': foto.url,
+        'descricao': foto.descricao,
+        'referencia_id': foto.referencia_id,
+        'categoria_id': foto.categoria_id,
+        'categoria_nome': categoria.nome if categoria else None,
+        'data_criacao': foto.data_criacao.isoformat() if foto.data_criacao else None
+    })
+
+@app.route('/api/fotos/<int:id>', methods=['DELETE'])
+def excluir_foto(id):
+    foto = FotoReferencia.query.get_or_404(id)
+    db.session.delete(foto)
+    db.session.commit()
+    return jsonify({'mensagem': 'Foto excluída com sucesso'})
+
+# Rotas para Notas
+@app.route('/api/notas', methods=['GET'])
+def obter_notas():
+    notas = Nota.query.order_by(Nota.data_atualizacao.desc()).all()
+    return jsonify([{
+        'id': nota.id,
+        'titulo': nota.titulo,
+        'conteudo': nota.conteudo,
+        'data_criacao': nota.data_criacao.isoformat() if nota.data_criacao else None,
+        'data_atualizacao': nota.data_atualizacao.isoformat() if nota.data_atualizacao else None
+    } for nota in notas])
+
+@app.route('/api/notas/<int:id>', methods=['GET'])
+def obter_nota(id):
+    nota = Nota.query.get_or_404(id)
+    return jsonify({
+        'id': nota.id,
+        'titulo': nota.titulo,
+        'conteudo': nota.conteudo,
+        'data_criacao': nota.data_criacao.isoformat() if nota.data_criacao else None,
+        'data_atualizacao': nota.data_atualizacao.isoformat() if nota.data_atualizacao else None
+    })
+
+@app.route('/api/notas', methods=['POST'])
+def adicionar_nota():
+    dados = request.json
+    nova_nota = Nota(
+        titulo=dados['titulo'],
+        conteudo=dados.get('conteudo', '')
+    )
+    db.session.add(nova_nota)
+    db.session.commit()
+
+    return jsonify({
+        'id': nova_nota.id,
+        'titulo': nova_nota.titulo,
+        'conteudo': nova_nota.conteudo,
+        'data_criacao': nova_nota.data_criacao.isoformat() if nova_nota.data_criacao else None,
+        'data_atualizacao': nova_nota.data_atualizacao.isoformat() if nova_nota.data_atualizacao else None
+    }), 201
+
+@app.route('/api/notas/<int:id>', methods=['PUT'])
+def atualizar_nota(id):
+    nota = Nota.query.get_or_404(id)
+    dados = request.json
+
+    if 'titulo' in dados:
+        nota.titulo = dados['titulo']
+
+    if 'conteudo' in dados:
+        nota.conteudo = dados['conteudo']
+
+    db.session.commit()
+
+    return jsonify({
+        'id': nota.id,
+        'titulo': nota.titulo,
+        'conteudo': nota.conteudo,
+        'data_criacao': nota.data_criacao.isoformat() if nota.data_criacao else None,
+        'data_atualizacao': nota.data_atualizacao.isoformat() if nota.data_atualizacao else None
+    })
+
+@app.route('/api/notas/<int:id>', methods=['DELETE'])
+def excluir_nota(id):
+    nota = Nota.query.get_or_404(id)
+    db.session.delete(nota)
+    db.session.commit()
+    return jsonify({'mensagem': 'Nota excluída com sucesso'})
 
 if __name__ == '__main__':
     app.run(debug=True)

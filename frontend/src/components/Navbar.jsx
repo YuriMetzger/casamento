@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaMoneyBillWave, FaListAlt, FaCog, FaCheckSquare } from 'react-icons/fa';
+import { FaHome, FaMoneyBillWave, FaListAlt, FaCog, FaCheckSquare, FaImages, FaStickyNote } from 'react-icons/fa';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -42,6 +42,18 @@ const Navbar = () => {
             <Link to="/checklists">
               <FaCheckSquare />
               <span>Checklists</span>
+            </Link>
+          </li>
+          <li className={location.pathname.startsWith('/referencias') ? 'active' : ''}>
+            <Link to="/referencias">
+              <FaImages />
+              <span>Referências</span>
+            </Link>
+          </li>
+          <li className={location.pathname.startsWith('/notas') ? 'active' : ''}>
+            <Link to="/notas">
+              <FaStickyNote />
+              <span>Notas</span>
             </Link>
           </li>
         </ul>

@@ -1,0 +1,257 @@
+.notas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.nota-card {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+}
+
+.nota-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.nota-header {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nota-titulo {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-delete-nota {
+  background: transparent;
+  border: none;
+  color: var(--danger-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: var(--transition);
+}
+
+.btn-delete-nota:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.nota-preview {
+  padding: 1rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+.nota-conteudo-preview {
+  color: #666;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  max-height: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+.nota-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+.nota-data {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+/* Editor de Notas */
+.nota-editor {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+}
+
+.nota-titulo-input {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.titulo-input {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  outline: none;
+}
+
+.titulo-input:focus {
+  border-color: var(--primary-color);
+}
+
+.nota-conteudo-editor {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+/* Editor Alternativo */
+.editor-alternativo {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor-alternativo textarea {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  resize: none;
+  outline: none;
+}
+
+.editor-alternativo textarea:focus {
+  border-color: var(--primary-color);
+}
+
+.editor-info {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.editor-info pre {
+  background-color: #eee;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+/* Detalhes da Nota */
+.nota-detail {
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  margin-top: 1rem;
+}
+
+.nota-header-detail {
+  margin-bottom: 2rem;
+}
+
+.nota-titulo-detail {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary-color);
+  font-size: 1.75rem;
+}
+
+.nota-metadata {
+  display: flex;
+  gap: 1rem;
+}
+
+.nota-conteudo-detail {
+  line-height: 1.6;
+  color: #333;
+}
+
+.nota-sem-conteudo {
+  color: #999;
+  font-style: italic;
+}
+
+/* Botões */
+.btn-save {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.btn-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  background-color: #f5f5f5;
+  color: #666;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-right: 0.5rem;
+}
+
+.btn-cancel:hover {
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .notas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nota-editor {
+    height: calc(100vh - 150px);
+  }
+  
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .page-actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
