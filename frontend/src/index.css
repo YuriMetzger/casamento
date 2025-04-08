@@ -1,5 +1,6 @@
 :root {
   --primary-color: #6a5acd;
+  --primary-color-rgb: 106, 90, 205; /* RGB values for primary color */
   --secondary-color: #9370db;
   --accent-color: #e6e6fa;
   --text-color: #333;

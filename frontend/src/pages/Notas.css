@@ -1,6 +1,6 @@
 .notas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -8,111 +8,148 @@
 .nota-card {
   background-color: white;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  transition: var(--transition);
+  transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 280px;
+  border: 1px solid #e9ecef;
+  position: relative;
 }
 
 .nota-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  border-color: #ced4da;
 }
 
 .nota-header {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #e9ecef;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #f8f9fa;
 }
 
 .nota-titulo {
   margin: 0;
   font-size: 1.25rem;
+  font-weight: 600;
   color: var(--primary-color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 80%;
 }
 
 .btn-delete-nota {
   background: transparent;
   border: none;
-  color: var(--danger-color);
+  color: #adb5bd;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  transition: var(--transition);
+  transition: all 0.2s ease;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  opacity: 0;
+}
+
+.nota-card:hover .btn-delete-nota {
+  opacity: 1;
 }
 
 .btn-delete-nota:hover {
   background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger-color);
 }
 
 .nota-preview {
-  padding: 1rem;
+  padding: 1.5rem;
   flex: 1;
   overflow: hidden;
+  position: relative;
+}
+
+.nota-preview::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  pointer-events: none;
 }
 
 .nota-conteudo-preview {
-  color: #666;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  color: #495057;
+  font-size: 0.95rem;
+  line-height: 1.6;
   max-height: 100%;
   overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
+}
+
+.nota-conteudo-preview img {
+  display: none; /* Hide images in preview */
 }
 
 .nota-footer {
-  padding: 0.75rem 1rem;
-  border-top: 1px solid #eee;
-  background-color: #f9f9f9;
+  padding: 0.75rem 1.5rem;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  font-size: 0.85rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.nota-data {
-  font-size: 0.75rem;
-  color: #999;
+.nota-footer svg {
+  color: #6c757d;
 }
 
 /* Editor de Notas */
 .nota-editor {
   background-color: white;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 200px);
+  border: 1px solid #e9ecef;
 }
 
 .nota-titulo-input {
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .titulo-input {
   width: 100%;
-  padding: 0.75rem;
-  font-size: 1.5rem;
-  border: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  font-size: 1.75rem;
+  border: 1px solid #e9ecef;
   border-radius: var(--border-radius);
   outline: none;
+  color: #333;
+  font-weight: 500;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .titulo-input:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
 }
 
 .nota-conteudo-editor {
@@ -121,76 +158,285 @@
   padding: 1rem;
 }
 
-/* Editor Alternativo */
-.editor-alternativo {
+/* Editor Rico */
+.editor-rico {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.editor-alternativo textarea {
-  flex: 1;
-  padding: 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
   border: 1px solid #ddd;
   border-radius: var(--border-radius);
-  resize: none;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+.toolbar-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #495057;
+  transition: all 0.2s ease;
+}
+
+/* Removido definição de tamanho de ícones, agora definido diretamente nos componentes */
+
+.toolbar-button:hover {
+  background-color: #f1f3f5;
+  border-color: #ced4da;
+  color: var(--primary-color);
+}
+
+.toolbar-button:active {
+  background-color: #e9ecef;
+  transform: translateY(1px);
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 40px;
+  background-color: #e9ecef;
+  margin: 0 0.5rem;
+}
+
+/* Dropdowns */
+.toolbar-dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  position: relative;
+}
+
+.dropdown-toggle::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid #adb5bd;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 160px;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: left;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: var(--primary-color);
+}
+
+/* Color menu */
+.color-menu {
+  display: none;
+  flex-wrap: wrap;
+  width: 120px;
+  padding: 0.5rem;
+}
+
+.toolbar-dropdown:hover .color-menu {
+  display: flex;
+}
+
+.color-item {
+  width: 24px;
+  height: 24px;
+  margin: 0.25rem;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.color-item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.editor-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
   outline: none;
+  line-height: 1.6;
+  color: #333;
+  font-size: 1rem;
+  min-height: 300px;
+  background-color: white;
 }
 
-.editor-alternativo textarea:focus {
-  border-color: var(--primary-color);
+.editor-content:empty:before {
+  content: attr(placeholder);
+  color: #aaa;
+  pointer-events: none;
 }
 
-.editor-info {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #f9f9f9;
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
   border-radius: var(--border-radius);
-  font-size: 0.875rem;
+}
+
+.editor-content blockquote {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid var(--primary-color);
+  background-color: #f9f9f9;
+  font-style: italic;
   color: #666;
 }
 
-.editor-info pre {
-  background-color: #eee;
-  padding: 0.5rem;
-  border-radius: 4px;
-  margin-top: 0.5rem;
+.editor-content h1, .editor-content h2, .editor-content h3 {
+  margin: 1.5rem 0 1rem;
+  color: var(--primary-color);
+}
+
+.editor-content ul, .editor-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
 }
 
 /* Detalhes da Nota */
 .nota-detail {
   background-color: white;
   border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
   margin-top: 1rem;
+  border: 1px solid #e9ecef;
 }
 
 .nota-header-detail {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .nota-titulo-detail {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 1rem 0;
   color: var(--primary-color);
-  font-size: 1.75rem;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .nota-metadata {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.nota-data {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nota-data svg {
+  color: #6c757d;
 }
 
 .nota-conteudo-detail {
-  line-height: 1.6;
+  line-height: 1.8;
   color: #333;
+  font-size: 1.1rem;
+}
+
+.nota-conteudo-detail h1,
+.nota-conteudo-detail h2,
+.nota-conteudo-detail h3 {
+  margin: 1.5rem 0 1rem;
+  color: var(--primary-color);
+}
+
+.nota-conteudo-detail p {
+  margin-bottom: 1.25rem;
+}
+
+.nota-conteudo-detail img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nota-conteudo-detail ul,
+.nota-conteudo-detail ol {
+  margin: 1.25rem 0;
+  padding-left: 2rem;
+}
+
+.nota-conteudo-detail blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--primary-color);
+  background-color: #f8f9fa;
+  font-style: italic;
+  color: #495057;
 }
 
 .nota-sem-conteudo {
-  color: #999;
+  color: #adb5bd;
   font-style: italic;
+  padding: 2rem;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius);
 }
 
 /* Botões */
@@ -205,12 +451,14 @@
   border-radius: var(--border-radius);
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
 }
 
 .btn-save:hover:not(:disabled) {
   background-color: var(--secondary-color);
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-save:disabled {
@@ -219,6 +467,9 @@
 }
 
 .btn-cancel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   background-color: #f5f5f5;
   color: #666;
@@ -226,29 +477,74 @@
   border-radius: var(--border-radius);
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition);
+  transition: all 0.2s ease;
   margin-right: 0.5rem;
+  font-size: 0.95rem;
 }
 
 .btn-cancel:hover {
   background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.btn-edit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #4dabf7;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.btn-edit:hover {
+  background-color: #339af0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.btn-delete:hover {
+  background-color: #fa5252;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
   .notas-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .nota-editor {
     height: calc(100vh - 150px);
   }
-  
+
   .page-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .page-actions {
     width: 100%;
     display: flex;

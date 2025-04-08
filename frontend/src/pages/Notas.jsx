@@ -1,28 +1,125 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
-import { FaPlus, FaArrowLeft, FaEdit, FaTrash, FaSave } from 'react-icons/fa';
+import { FaPlus, FaArrowLeft, FaEdit, FaTrash, FaSave, FaImage, FaBold, FaItalic, FaUnderline, FaStrikethrough, FaAlignLeft, FaAlignCenter, FaAlignRight, FaListUl, FaListOl, FaPalette, FaHeading, FaClock, FaCalendarAlt } from 'react-icons/fa';
 import { notasService } from '../services/api';
 import Modal from '../components/common/Modal';
 import './Notas.css';
 
-// Importação condicional para o React Quill
-// Como não conseguimos instalar o pacote, vamos criar um componente alternativo
-const EditorAlternativo = ({ value, onChange }) => {
+// Editor de texto rico personalizado usando contenteditable
+const EditorRico = ({ value, onChange }) => {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.innerHTML = value;
+    }
+  }, []);
+
+  const handleInput = () => {
+    if (editorRef.current) {
+      onChange(editorRef.current.innerHTML);
+    }
+  };
+
+  const formatarTexto = (comando, valor = null) => {
+    document.execCommand(comando, false, valor);
+    editorRef.current.focus();
+    handleInput();
+  };
+
+  const inserirImagem = () => {
+    const url = prompt('Digite a URL da imagem:');
+    if (url) {
+      document.execCommand('insertImage', false, url);
+      handleInput();
+    }
+  };
+
   return (
-    <div className="editor-alternativo">
-      <textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Digite seu conteúdo aqui..."
-        rows={20}
-      />
-      <div className="editor-info">
-        <p>
-          Para uma experiência melhor com formatação de texto e inserção de imagens,
-          instale o pacote react-quill:
-        </p>
-        <pre>npm install react-quill</pre>
+    <div className="editor-rico">
+      <div className="editor-toolbar">
+        <div className="toolbar-group">
+          <button type="button" onClick={() => formatarTexto('bold')} title="Negrito" className="toolbar-button">
+            <FaBold size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('italic')} title="Itálico" className="toolbar-button">
+            <FaItalic size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('underline')} title="Sublinhado" className="toolbar-button">
+            <FaUnderline size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('strikeThrough')} title="Tachado" className="toolbar-button">
+            <FaStrikethrough size={18} />
+          </button>
+        </div>
+
+        <div className="toolbar-separator"></div>
+
+        <div className="toolbar-group">
+          <button type="button" onClick={() => formatarTexto('justifyLeft')} title="Alinhar à esquerda" className="toolbar-button">
+            <FaAlignLeft size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('justifyCenter')} title="Centralizar" className="toolbar-button">
+            <FaAlignCenter size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('justifyRight')} title="Alinhar à direita" className="toolbar-button">
+            <FaAlignRight size={18} />
+          </button>
+        </div>
+
+        <div className="toolbar-separator"></div>
+
+        <div className="toolbar-group">
+          <button type="button" onClick={() => formatarTexto('insertUnorderedList')} title="Lista com marcadores" className="toolbar-button">
+            <FaListUl size={18} />
+          </button>
+          <button type="button" onClick={() => formatarTexto('insertOrderedList')} title="Lista numerada" className="toolbar-button">
+            <FaListOl size={18} />
+          </button>
+        </div>
+
+        <div className="toolbar-separator"></div>
+
+        <div className="toolbar-group">
+          <button type="button" onClick={inserirImagem} title="Inserir imagem" className="toolbar-button">
+            <FaImage size={18} />
+          </button>
+
+          <div className="toolbar-dropdown">
+            <button type="button" className="toolbar-button dropdown-toggle" title="Estilo de texto">
+              <FaHeading size={18} />
+            </button>
+            <div className="dropdown-menu">
+              <button onClick={() => formatarTexto('formatBlock', 'h1')} className="dropdown-item">Título 1</button>
+              <button onClick={() => formatarTexto('formatBlock', 'h2')} className="dropdown-item">Título 2</button>
+              <button onClick={() => formatarTexto('formatBlock', 'h3')} className="dropdown-item">Título 3</button>
+              <button onClick={() => formatarTexto('formatBlock', 'p')} className="dropdown-item">Parágrafo</button>
+              <button onClick={() => formatarTexto('formatBlock', 'blockquote')} className="dropdown-item">Citação</button>
+            </div>
+          </div>
+
+          <div className="toolbar-dropdown">
+            <button type="button" className="toolbar-button dropdown-toggle" title="Cor do texto">
+              <FaPalette size={18} />
+            </button>
+            <div className="dropdown-menu color-menu">
+              <button onClick={() => formatarTexto('foreColor', '#000000')} className="color-item" style={{ backgroundColor: '#000000' }}></button>
+              <button onClick={() => formatarTexto('foreColor', '#FF0000')} className="color-item" style={{ backgroundColor: '#FF0000' }}></button>
+              <button onClick={() => formatarTexto('foreColor', '#0000FF')} className="color-item" style={{ backgroundColor: '#0000FF' }}></button>
+              <button onClick={() => formatarTexto('foreColor', '#008000')} className="color-item" style={{ backgroundColor: '#008000' }}></button>
+              <button onClick={() => formatarTexto('foreColor', '#FFA500')} className="color-item" style={{ backgroundColor: '#FFA500' }}></button>
+              <button onClick={() => formatarTexto('foreColor', '#800080')} className="color-item" style={{ backgroundColor: '#800080' }}></button>
+            </div>
+          </div>
+        </div>
       </div>
+      <div
+        ref={editorRef}
+        className="editor-content"
+        contentEditable
+        onInput={handleInput}
+        placeholder="Digite seu conteúdo aqui..."
+      />
     </div>
   );
 };
@@ -32,11 +129,11 @@ const NotasHome = () => {
   const [notas, setNotas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     carregarNotas();
   }, []);
-  
+
   const carregarNotas = async () => {
     try {
       setLoading(true);
@@ -50,18 +147,18 @@ const NotasHome = () => {
       setLoading(false);
     }
   };
-  
+
   const handleNovaNota = () => {
     navigate('/notas/nova');
   };
-  
+
   const handleVerNota = (id) => {
     navigate(`/notas/${id}`);
   };
-  
+
   const handleExcluirNota = async (id, e) => {
     e.stopPropagation();
-    
+
     if (window.confirm('Tem certeza que deseja excluir esta nota?')) {
       try {
         await notasService.excluir(id);
@@ -72,13 +169,13 @@ const NotasHome = () => {
       }
     }
   };
-  
+
   const formatarData = (dataString) => {
     if (!dataString) return '';
     const data = new Date(dataString);
     return data.toLocaleDateString() + ' ' + data.toLocaleTimeString().substring(0, 5);
   };
-  
+
   if (loading) {
     return (
       <div className="container">
@@ -89,7 +186,7 @@ const NotasHome = () => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="container">
@@ -100,13 +197,13 @@ const NotasHome = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="container">
       <div className="page-header">
         <h1 className="page-title">Minhas Notas</h1>
         <div className="page-actions">
-          <button 
+          <button
             className="btn-add"
             onClick={handleNovaNota}
             title="Adicionar nova nota"
@@ -115,7 +212,7 @@ const NotasHome = () => {
           </button>
         </div>
       </div>
-      
+
       {notas.length === 0 ? (
         <div className="empty-state">
           <h2>Nenhuma nota encontrada</h2>
@@ -127,14 +224,14 @@ const NotasHome = () => {
       ) : (
         <div className="notas-grid">
           {notas.map(nota => (
-            <div 
-              key={nota.id} 
+            <div
+              key={nota.id}
               className="nota-card"
               onClick={() => handleVerNota(nota.id)}
             >
               <div className="nota-header">
                 <h3 className="nota-titulo">{nota.titulo}</h3>
-                <button 
+                <button
                   className="btn-delete-nota"
                   onClick={(e) => handleExcluirNota(nota.id, e)}
                   title="Excluir nota"
@@ -142,17 +239,17 @@ const NotasHome = () => {
                   <FaTrash />
                 </button>
               </div>
-              
+
               <div className="nota-preview">
-                <div 
+                <div
                   className="nota-conteudo-preview"
                   dangerouslySetInnerHTML={{ __html: nota.conteudo?.substring(0, 150) + '...' }}
                 />
               </div>
-              
+
               <div className="nota-footer">
                 <span className="nota-data">
-                  Atualizado em {formatarData(nota.data_atualizacao)}
+                  <FaClock size={16} /> Atualizado em {formatarData(nota.data_atualizacao)}
                 </span>
               </div>
             </div>
@@ -168,7 +265,7 @@ const NovaNota = () => {
   const [titulo, setTitulo] = useState('');
   const [conteudo, setConteudo] = useState('');
   const [salvando, setSalvando] = useState(false);
-  
+
   const handleVoltar = () => {
     if (titulo || conteudo) {
       if (window.confirm('Deseja sair sem salvar as alterações?')) {
@@ -178,13 +275,13 @@ const NovaNota = () => {
       navigate('/notas');
     }
   };
-  
+
   const handleSalvar = async () => {
     if (!titulo.trim()) {
       alert('Por favor, informe um título para a nota.');
       return;
     }
-    
+
     try {
       setSalvando(true);
       const novaNota = await notasService.adicionar({
@@ -198,7 +295,7 @@ const NovaNota = () => {
       setSalvando(false);
     }
   };
-  
+
   return (
     <div className="container">
       <div className="page-header">
@@ -207,16 +304,16 @@ const NovaNota = () => {
         </button>
         <h1 className="page-title">Nova Nota</h1>
         <div className="page-actions">
-          <button 
+          <button
             className="btn-save"
             onClick={handleSalvar}
             disabled={salvando}
           >
-            <FaSave /> {salvando ? 'Salvando...' : 'Salvar'}
+            <FaSave size={18} /> {salvando ? 'Salvando...' : 'Salvar'}
           </button>
         </div>
       </div>
-      
+
       <div className="nota-editor">
         <div className="nota-titulo-input">
           <input
@@ -227,9 +324,9 @@ const NovaNota = () => {
             className="titulo-input"
           />
         </div>
-        
+
         <div className="nota-conteudo-editor">
-          <EditorAlternativo
+          <EditorRico
             value={conteudo}
             onChange={setConteudo}
           />
@@ -249,7 +346,7 @@ const NotaDetail = () => {
   const [error, setError] = useState(null);
   const [editando, setEditando] = useState(false);
   const [salvando, setSalvando] = useState(false);
-  
+
   useEffect(() => {
     const carregarNota = async () => {
       try {
@@ -266,10 +363,10 @@ const NotaDetail = () => {
         setLoading(false);
       }
     };
-    
+
     carregarNota();
   }, [notaId]);
-  
+
   const handleVoltar = () => {
     if (editando && (titulo !== nota.titulo || conteudo !== nota.conteudo)) {
       if (window.confirm('Deseja sair sem salvar as alterações?')) {
@@ -279,23 +376,23 @@ const NotaDetail = () => {
       navigate('/notas');
     }
   };
-  
+
   const handleEditar = () => {
     setEditando(true);
   };
-  
+
   const handleCancelarEdicao = () => {
     setTitulo(nota.titulo);
     setConteudo(nota.conteudo || '');
     setEditando(false);
   };
-  
+
   const handleSalvar = async () => {
     if (!titulo.trim()) {
       alert('Por favor, informe um título para a nota.');
       return;
     }
-    
+
     try {
       setSalvando(true);
       const notaAtualizada = await notasService.atualizar(notaId, {
@@ -311,7 +408,7 @@ const NotaDetail = () => {
       setSalvando(false);
     }
   };
-  
+
   const handleExcluir = async () => {
     if (window.confirm('Tem certeza que deseja excluir esta nota?')) {
       try {
@@ -323,13 +420,13 @@ const NotaDetail = () => {
       }
     }
   };
-  
+
   const formatarData = (dataString) => {
     if (!dataString) return '';
     const data = new Date(dataString);
     return data.toLocaleDateString() + ' ' + data.toLocaleTimeString().substring(0, 5);
   };
-  
+
   if (loading) {
     return (
       <div className="container">
@@ -340,7 +437,7 @@ const NotaDetail = () => {
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="container">
@@ -351,9 +448,9 @@ const NotaDetail = () => {
       </div>
     );
   }
-  
+
   if (!nota) return null;
-  
+
   return (
     <div className="container">
       <div className="page-header">
@@ -366,41 +463,41 @@ const NotaDetail = () => {
         <div className="page-actions">
           {editando ? (
             <>
-              <button 
+              <button
                 className="btn-cancel"
                 onClick={handleCancelarEdicao}
               >
                 Cancelar
               </button>
-              <button 
+              <button
                 className="btn-save"
                 onClick={handleSalvar}
                 disabled={salvando}
               >
-                <FaSave /> {salvando ? 'Salvando...' : 'Salvar'}
+                <FaSave size={18} /> {salvando ? 'Salvando...' : 'Salvar'}
               </button>
             </>
           ) : (
             <>
-              <button 
+              <button
                 className="btn-edit"
                 onClick={handleEditar}
                 title="Editar nota"
               >
-                <FaEdit />
+                <FaEdit size={18} /> Editar
               </button>
-              <button 
+              <button
                 className="btn-delete"
                 onClick={handleExcluir}
                 title="Excluir nota"
               >
-                <FaTrash />
+                <FaTrash size={18} /> Excluir
               </button>
             </>
           )}
         </div>
       </div>
-      
+
       <div className="nota-detail">
         {editando ? (
           <div className="nota-editor">
@@ -413,9 +510,9 @@ const NotaDetail = () => {
                 className="titulo-input"
               />
             </div>
-            
+
             <div className="nota-conteudo-editor">
-              <EditorAlternativo
+              <EditorRico
                 value={conteudo}
                 onChange={setConteudo}
               />
@@ -427,14 +524,14 @@ const NotaDetail = () => {
               <h2 className="nota-titulo-detail">{nota.titulo}</h2>
               <div className="nota-metadata">
                 <span className="nota-data">
-                  Criado em {formatarData(nota.data_criacao)}
+                  <FaCalendarAlt size={16} /> Criado em {formatarData(nota.data_criacao)}
                 </span>
                 <span className="nota-data">
-                  Atualizado em {formatarData(nota.data_atualizacao)}
+                  <FaClock size={16} /> Atualizado em {formatarData(nota.data_atualizacao)}
                 </span>
               </div>
             </div>
-            
+
             <div className="nota-conteudo-detail">
               {nota.conteudo ? (
                 <div dangerouslySetInnerHTML={{ __html: nota.conteudo }} />
