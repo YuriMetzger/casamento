@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
-import { FaPlus, FaArrowLeft, FaEdit, FaTrash, FaSave, FaImage, FaBold, FaItalic, FaUnderline, FaStrikethrough, FaAlignLeft, FaAlignCenter, FaAlignRight, FaListUl, FaListOl, FaPalette, FaHeading, FaClock, FaCalendarAlt } from 'react-icons/fa';
+import { FaPlus, FaArrowLeft, FaEdit, FaTrash, FaSave, FaImage, FaBold, FaItalic, FaUnderline, FaStrikethrough, FaAlignLeft, FaAlignCenter, FaAlignRight, FaListUl, FaListOl, FaPalette, FaHeading, FaClock, FaCalendarAlt, FaExpand, FaCompress } from 'react-icons/fa';
 import { notasService } from '../services/api';
 import Modal from '../components/common/Modal';
 import './Notas.css';
@@ -8,6 +8,7 @@ import './Notas.css';
 // Editor de texto rico personalizado usando contenteditable
 const EditorRico = ({ value, onChange }) => {
   const editorRef = useRef(null);
+  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     if (editorRef.current) {
@@ -35,8 +36,12 @@ const EditorRico = ({ value, onChange }) => {
     }
   };
 
+  const toggleFullscreen = () => {
+    setFullscreen(!fullscreen);
+  };
+
   return (
-    <div className="editor-rico">
+    <div className={`editor-rico ${fullscreen ? 'fullscreen' : ''}`}>
       <div className="editor-toolbar">
         <div className="toolbar-group">
           <button type="button" onClick={() => formatarTexto('bold')} title="Negrito" className="toolbar-button">
@@ -111,6 +116,17 @@ const EditorRico = ({ value, onChange }) => {
               <button onClick={() => formatarTexto('foreColor', '#800080')} className="color-item" style={{ backgroundColor: '#800080' }}></button>
             </div>
           </div>
+
+          <div className="toolbar-separator"></div>
+
+          <button
+            type="button"
+            className="toolbar-button fullscreen-button"
+            onClick={toggleFullscreen}
+            title={fullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
+          >
+            {fullscreen ? <FaCompress size={18} /> : <FaExpand size={18} />}
+          </button>
         </div>
       </div>
       <div
